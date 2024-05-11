@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */; };
 		EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */; };
+		EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = EDC4E6B82BDE9161001EA129 /* AlertKit */; };
+		EDC4E6F02BEFF583001EA129 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6EF2BEFF583001EA129 /* ControlView.swift */; };
 		EDE450562BDBFB5D0058C512 /* BlurrifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450552BDBFB5D0058C512 /* BlurrifyApp.swift */; };
 		EDE450582BDBFB5D0058C512 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450572BDBFB5D0058C512 /* ContentView.swift */; };
 		EDE4505A2BDBFB5F0058C512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDE450592BDBFB5F0058C512 /* Assets.xcassets */; };
@@ -19,6 +21,7 @@
 /* Begin PBXFileReference section */
 		EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		EDC4E6EF2BEFF583001EA129 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		EDE450522BDBFB5D0058C512 /* Blurrify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blurrify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE450552BDBFB5D0058C512 /* BlurrifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurrifyApp.swift; sourceTree = "<group>"; };
 		EDE450572BDBFB5D0058C512 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +49,14 @@
 				EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */,
 			);
 			path = Extesions;
+			sourceTree = "<group>";
+		};
+		EDC4E6EE2BEFF562001EA129 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EDC4E6EF2BEFF583001EA129 /* ControlView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		EDE450492BDBFB5D0058C512 = {
@@ -66,6 +78,7 @@
 		EDE450542BDBFB5D0058C512 /* Blurrify */ = {
 			isa = PBXGroup;
 			children = (
+				EDC4E6EE2BEFF562001EA129 /* Components */,
 				EDC4E6B22BDC288B001EA129 /* Extesions */,
 				EDE450632BDC16030058C512 /* Services */,
 				EDE450552BDBFB5D0058C512 /* BlurrifyApp.swift */,
@@ -108,6 +121,9 @@
 			dependencies = (
 			);
 			name = Blurrify;
+			packageProductDependencies = (
+				EDC4E6B82BDE9161001EA129 /* AlertKit */,
+			);
 			productName = Blurrify;
 			productReference = EDE450522BDBFB5D0058C512 /* Blurrify.app */;
 			productType = "com.apple.product-type.application";
@@ -136,6 +152,9 @@
 				Base,
 			);
 			mainGroup = EDE450492BDBFB5D0058C512;
+			packageReferences = (
+				EDC4E6B72BDE9161001EA129 /* XCRemoteSwiftPackageReference "AlertKit" */,
+			);
 			productRefGroup = EDE450532BDBFB5D0058C512 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -166,6 +185,7 @@
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* ContentView.swift in Sources */,
 				EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */,
+				EDC4E6F02BEFF583001EA129 /* ControlView.swift in Sources */,
 				EDE450562BDBFB5D0058C512 /* BlurrifyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +323,7 @@
 				DEVELOPMENT_TEAM = X752JDEFHP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app needs access to photo gallery in order to retrieve and save images to camera roll";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -332,6 +353,7 @@
 				DEVELOPMENT_TEAM = X752JDEFHP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app needs access to photo gallery in order to retrieve and save images to camera roll";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -372,6 +394,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EDC4E6B72BDE9161001EA129 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparrowcode/AlertKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EDC4E6B82BDE9161001EA129 /* AlertKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EDC4E6B72BDE9161001EA129 /* XCRemoteSwiftPackageReference "AlertKit" */;
+			productName = AlertKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EDE4504A2BDBFB5D0058C512 /* Project object */;
 }
