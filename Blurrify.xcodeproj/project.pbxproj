@@ -16,6 +16,7 @@
 		EDE4505A2BDBFB5F0058C512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDE450592BDBFB5F0058C512 /* Assets.xcassets */; };
 		EDE4505D2BDBFB5F0058C512 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDE4505C2BDBFB5F0058C512 /* Preview Assets.xcassets */; };
 		EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */; };
+		EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED03F42DDD9151003F3AF1 /* CanvasView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		EDE450592BDBFB5F0058C512 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDE4505C2BDBFB5F0058C512 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryService.swift; sourceTree = "<group>"; };
+		EDED03F42DDD9151003F3AF1 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE450572BDBFB5D0058C512 /* MainContentView.swift */,
+				EDED03F42DDD9151003F3AF1 /* CanvasView.swift */,
 			);
 			path = "Main Content View";
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */,
+				EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */,
 				EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */,
