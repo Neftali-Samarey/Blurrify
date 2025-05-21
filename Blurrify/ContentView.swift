@@ -7,14 +7,22 @@
 
 import SwiftUI
 import PhotosUI
+import AlertKit
 
 struct ContentView: View {
 
+    @Environment(\.colorScheme) var colorScheme
+
     @State private var pickerItem: PhotosPickerItem?
     @State private var selectedImage: Image?
+    @State private var imageToSave: UIImage?
     @State private var shouldLoadControls: Bool = false
     @State private var showingAlert = false
+    @State private var showingSavedAlert = true
     @State private var blurRadius: CGFloat = 0.0
+
+    let alertView = AlertAppleMusic17View(title: "Saved to Photo Album", subtitle: nil, icon: .done)
+    let imageSaver = ImageSaver()
 
     var body: some View {
         GeometryReader { geometry in
@@ -26,7 +34,7 @@ struct ContentView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 55.0, height: 55.0)
-                                .tint(Color.primaryBlue)
+                                .tint(colorScheme == .dark ? Color.white : Color.primaryBlue)
                             Text("Select Image")
                                 .font(.headline)
                                 .padding(.top, 5)
@@ -35,10 +43,7 @@ struct ContentView: View {
                         .padding([.leading, .trailing], 60)
                     }
                 }
-                .dottedBorder(Color.primaryBlue.opacity(0.5))
-
-                /*PhotosPicker("Selection", selection: $pickerItem, matching: .images)
-                    .frame(width: geometry.size.width, height: geometry.size.height)*/
+                .dottedBorder(colorScheme == .dark ? Color.white : Color.primaryBlue.opacity(0.5))
 
                 selectedImage?
                     .resizable()
@@ -61,8 +66,31 @@ struct ContentView: View {
                     VStack {
                         Spacer()
                         ControlView { isSaving, blurIntensity, isDeleting  in
-                            if let isSaving = isSaving {
-                                //
+                            if let _ = isSaving {
+                                guard let image = selectedImage else { return }
+                                convert(image: image) { editedImage in
+                                    guard let convertedImage = editedImage else { return }
+
+                                    let test = convertedImage.blurredImageWithClippedEdges(inputRadius: blurRadius)
+                                    guard let image = test else { return }
+                                    save(image: image)
+
+                                    //let uiImage = CIImage(image: convertedImage)
+
+                                    // Convert CIImage to UIImage
+                                    /*let context = CIContext()
+                                    if let blurredUIImage = blurredImage.flatMap({
+                                        context.createCGImage($0, from: $0.extent)
+                                    }).flatMap({
+                                        UIImage(cgImage: $0)
+                                    }) {
+                                        self.imageToSave = blurredUIImage
+
+                                        // Save the blurred image to the photo library
+                                        UIImageWriteToSavedPhotosAlbum(blurredUIImage, nil, nil, nil)
+                                    }*/
+                                }
+                                //guard let uiImage = self.selectedImage?.uiImage else { return }
                             }
 
                             if let isDeleting = isDeleting {
@@ -73,12 +101,7 @@ struct ContentView: View {
                                 blurRadius = blurIntensity
                             }
                         }
-                            .frame(height: 65)
-                            .background(Color.black.opacity(0.6))
-                            .cornerRadius(10)
-                            .padding(.leading, 20)
-                            .padding(.trailing, 20)
-                            .padding(.bottom, 45)
+                            //.alert(isPresent: $showingSavedAlert, view: alertView)
                     }
                     .alert("Start all over?", isPresented: $showingAlert) {
                         // delete
@@ -105,6 +128,7 @@ struct ContentView: View {
             }
             .edgesIgnoringSafeArea(.all)
         }
+        .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
     }
 
     private func clear() {
@@ -112,49 +136,48 @@ struct ContentView: View {
         self.pickerItem = nil
         self.selectedImage = nil
     }
-}
 
-public struct ControlView: View {
-
-    @State private var blurIntensity: CGFloat = 0
-    var completion: ((Bool?, Double?, Bool?) -> Void)?
-    let minimumBlur: CGFloat = 0
-    let maxiumBlur: CGFloat = 75
-
-    init(completion: ((Bool?, Double?, Bool?) -> Void)? = nil) {
-        self.completion = completion
+    private func save(image: UIImage) {
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
     }
 
-    public var body: some View {
-        HStack(alignment: .center, spacing: 15) {
-            Spacer()
-            Slider(value: Binding(get: {
-                self.blurIntensity
-            }, set: { (newVal) in
-                self.blurIntensity = newVal
-                guard let completion = completion else { return }
-                completion(nil, self.blurIntensity, nil)
-            }), in: minimumBlur...maxiumBlur)
-            Spacer()
-            Button {
-                guard let completion = completion else { return }
-                completion(true, nil, nil)
-            } label: {
-                Image(systemName: "square.and.arrow.down")
-                    .foregroundStyle(.white)
-                    .font(.system(size: 23.0))
-            }
-            Button {
-                guard let completion = completion else { return }
-                completion(nil, nil, true)
-            } label: {
-                Image(systemName: "trash")
-                    .foregroundStyle(.white)
-                    .font(.system(size: 23.0))
-            }
-            Spacer()
+    public func convert(image: Image, callback: @escaping ((UIImage?) -> Void)) {
+        DispatchQueue.main.async {
+            let renderer = ImageRenderer(content: image)
+
+            // to adjust the size, you can use this (or set a frame to get precise output size)
+            // renderer.scale = 0.25
+
+            // for CGImage use renderer.cgImage
+            callback(renderer.uiImage)
         }
     }
+
+    func getImageWithBlur(image: UIImage) -> UIImage? {
+
+        let context = CIContext(options: nil)
+
+        guard let currentFilter = CIFilter(name: "CIGaussianBlur") else { return nil }
+
+        let beginImage = CIImage(image: image)
+        currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
+        currentFilter.setValue(6.5, forKey: "inputRadius")
+
+        let rect = CGRect(x: 0.0, y: 0.0, width: image.size.width, height: image.size.height)
+
+        guard let output = currentFilter.outputImage?.unpremultiplyingAlpha().settingAlphaOne(in: rect) else { return nil }
+        guard let cgimg = context.createCGImage(output, from: rect) else { return nil }
+
+        print("image.size:    \(image.size)")
+        print("output.extent: \(output.extent)")
+
+        return UIImage(cgImage: cgimg)
+
+    }
+
+//    private func didSelectToSave() -> Bool {
+//        
+//    }
 }
 
 #Preview {

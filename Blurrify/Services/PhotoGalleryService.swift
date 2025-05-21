@@ -7,6 +7,28 @@
 
 import Foundation
 import Photos
+import UIKit
+
+public class ImageSaver: NSObject {
+    var successHandler: (() -> Void)?
+    var errorHandler: ((Error) ->Void)?
+
+    //***Method to save to Disk
+    //The location we want to Save.
+    func writeToDisk(image: UIImage, imageName: String) {
+        let savePath = FileManager.documentsDirectory.appendingPathComponent("\(imageName).jpg") //Where are I want to store my data
+        if let jpegData = image.jpegData(compressionQuality: 0.5) { // I can adjust the compression quality.
+            try? jpegData.write(to: savePath, options: [.atomic, .completeFileProtection])
+        }
+    }
+}
+
+extension FileManager {
+    static var documentsDirectory: URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+}
 
 /*class PhotoGalleryService: ObservableObject {
     var authorizationStatus: PHAuthorizationStatus = .notDetermined
