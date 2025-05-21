@@ -3,7 +3,7 @@
 Blurrify is a small utility photography app that allows you to quickly edit a wallpaper by applying a blurr overlay or edit a photo by adding redacting blur at any desired placement within a photo. 
 
 <p align="center">
-<img src='images/app-icon.png' title='App Icon' width='220px' alt='App Walkthrough' />
+<img src='images/RoundedIcon.png' title='App Icon' width='220px' alt='App Walkthrough' />
 </p>
 
 ## License
