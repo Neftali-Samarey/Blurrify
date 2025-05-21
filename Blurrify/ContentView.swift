@@ -33,7 +33,7 @@ struct ContentView: View {
                             Image(systemName: "photo.badge.plus")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 55.0, height: 55.0)
+                                .frame(width: 40.0, height: 40.0)
                                 .tint(colorScheme == .dark ? Color.white : Color.primaryBlue)
                             Text("Select Image")
                                 .font(.headline)
