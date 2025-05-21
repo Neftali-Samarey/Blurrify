@@ -9,7 +9,7 @@ import SwiftUI
 import PhotosUI
 import AlertKit
 
-struct ContentView: View {
+struct MainContentView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
@@ -45,6 +45,7 @@ struct ContentView: View {
                 }
                 .dottedBorder(colorScheme == .dark ? Color.white : Color.primaryBlue.opacity(0.5))
 
+                // This is the overlay view
                 selectedImage?
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -181,5 +182,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainContentView()
 }
