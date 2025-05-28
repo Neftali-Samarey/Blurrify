@@ -15,6 +15,19 @@ struct ImageFramePreferenceKey: PreferenceKey {
 
 extension CanvasContentView {
 
+    // save image
+    func saveImageToPhotos(_ image: UIImage, completion: @escaping (Error?) -> Void) {
+        let helper = ImageSaveHelper.shared
+        helper.completion = completion
+
+        UIImageWriteToSavedPhotosAlbum(
+            image,
+            helper,
+            #selector(ImageSaveHelper.image(_:didFinishSavingWithError:contextInfo:)),
+            nil
+        )
+    }
+
     // Used to clamp the dragging rectangle to prevent going out of bounds
     func clamp(point: CGPoint, to rect: CGRect) -> CGPoint {
         CGPoint(
