@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		ED2278EA2DE1722200A991FD /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = ED2278E92DE1722200A991FD /* Zoomable */; };
 		ED59F7322DE692B300B7DA6A /* CanvasContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */; };
+		ED59F7352DE6D5B800B7DA6A /* CanvasContentView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7342DE6D5AF00B7DA6A /* CanvasContentView+Extensions.swift */; };
 		EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */; };
 		EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */; };
 		EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = EDC4E6B82BDE9161001EA129 /* AlertKit */; };
@@ -24,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasContentView.swift; sourceTree = "<group>"; };
+		ED59F7342DE6D5AF00B7DA6A /* CanvasContentView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasContentView+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6EF2BEFF583001EA129 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
@@ -50,6 +52,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED59F7332DE6D57500B7DA6A /* Canvas Content View */ = {
+			isa = PBXGroup;
+			children = (
+				ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */,
+				ED59F7342DE6D5AF00B7DA6A /* CanvasContentView+Extensions.swift */,
+				EDED03F42DDD9151003F3AF1 /* CanvasView.swift */,
+			);
+			path = "Canvas Content View";
+			sourceTree = "<group>";
+		};
 		EDC4E6B22BDC288B001EA129 /* Extesions */ = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +130,7 @@
 			children = (
 				EDC4E6EE2BEFF562001EA129 /* Components */,
 				EDED03F32DDD8743003F3AF1 /* Main Content View */,
+				ED59F7332DE6D57500B7DA6A /* Canvas Content View */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -134,8 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				EDE450572BDBFB5D0058C512 /* MainContentView.swift */,
-				EDED03F42DDD9151003F3AF1 /* CanvasView.swift */,
-				ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */,
 			);
 			path = "Main Content View";
 			sourceTree = "<group>";
@@ -218,6 +229,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED59F7352DE6D5B800B7DA6A /* CanvasContentView+Extensions.swift in Sources */,
 				EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */,
 				EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
