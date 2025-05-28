@@ -5,11 +5,14 @@
 //  Created by Neftali Samarey on 5/27/25.
 //
 
+import AlertKit
 import SwiftUI
 
 public struct CanvasContentView: View {
 
     @Environment(\.colorScheme) var colorScheme
+
+    private let successAlert = AlertAppleMusic17View(title: "Image Saved Successfully", subtitle: nil, icon: .done)
 
     // image states
     @State private var startPoint: CGPoint? = nil
@@ -21,6 +24,7 @@ public struct CanvasContentView: View {
 
     // control states
     @State private var rectangleMaskSelected: Bool = false
+    @State private var alertPresented: Bool = false
 
     private let uiImage: UIImage
     private let completion: ((ControlEvent) -> Void)
@@ -45,7 +49,7 @@ public struct CanvasContentView: View {
                 case .blurIntensityGauge(let blurIntensity):
                     blurIntensityRadius = blurIntensity
                 case .saving:
-                    print("Saving item to camera roll.")
+                    // process the image...
                     /*let format = UIGraphicsImageRendererFormat.default()
                     format.scale = uiImage.scale
                     let renderer = UIGraphicsImageRenderer(size: uiImage.size, format: format)
@@ -76,6 +80,15 @@ public struct CanvasContentView: View {
                     }
 
                     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)*/
+
+                    // called last after all edits.
+                    saveImageToPhotos(uiImage) { error in
+                        if let error = error {
+                            print("Error saving to camera roll. Error: \(error)")
+                        } else {
+                            alertPresented = true
+                        }
+                    }
                 case .trash:
                     completion(.trash)
                 }
@@ -104,6 +117,7 @@ public struct CanvasContentView: View {
                 .disabled(rectanglesRepo.isEmpty)
             }
         }
+        .alert(isPresent: $alertPresented, view: successAlert)
         .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
     }
 
