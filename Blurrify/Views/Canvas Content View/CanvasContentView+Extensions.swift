@@ -6,6 +6,13 @@
 //
 import SwiftUI
 
+struct ImageFramePreferenceKey: PreferenceKey {
+    static var defaultValue: CGRect = .zero
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
+    }
+}
+
 extension CanvasContentView {
 
     // Used to clamp the dragging rectangle to prevent going out of bounds
