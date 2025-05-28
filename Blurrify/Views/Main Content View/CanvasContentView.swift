@@ -18,9 +18,13 @@ public struct CanvasContentView: View {
 
     @Environment(\.colorScheme) var colorScheme
 
+    // image states
     @State private var startPoint: CGPoint? = nil
     @State private var currentPoint: CGPoint? = nil
     @State private var rectangles: [CGRect] = []
+
+    // control states
+    @State private var rectangleMaskSelected: Bool = false
 
     private let uiImage: UIImage
     private let completion: ((ControlEvent) -> Void)
@@ -39,11 +43,12 @@ public struct CanvasContentView: View {
             ControlView { event in
                 switch event {
                 case .scribble:
-                    print("Scribble")
+                    rectangleMaskSelected = false
                 case .region:
-                    print("Region")
+                    rectangleMaskSelected = true
                 case .fullBlur(let blurIntensity):
                     print("Blur Value: \(blurIntensity)")
+                    rectangleMaskSelected = false
                 case .saving:
                     print("Saving action")
                     //UIImageWriteToSavedPhotosAlbum(uiImage, nil, nil, nil)
@@ -113,38 +118,7 @@ public struct CanvasContentView: View {
                         }
                     }
                     .frame(width: finalSize.width, height: finalSize.height)
-                    .gesture(
-                        DragGesture(minimumDistance: 0)
-                            .onChanged { value in
-                                if startPoint == nil {
-                                    startPoint = value.location
-                                }
-                                currentPoint = value.location
-                            }
-                            .onEnded { value in
-                                guard let start = startPoint, let end = currentPoint else {
-                                    startPoint = nil
-                                    currentPoint = nil
-                                    return
-                                }
-
-                                let imageFrame = CGRect(origin: .zero, size: finalSize)
-
-                                let clampedStart = clamp(point: start, to: imageFrame)
-                                let clampedEnd = clamp(point: end, to: imageFrame)
-
-                                let rect = CGRect(
-                                    x: min(clampedStart.x, clampedEnd.x),
-                                    y: min(clampedStart.y, clampedEnd.y),
-                                    width: abs(clampedEnd.x - clampedStart.x),
-                                    height: abs(clampedEnd.y - clampedStart.y)
-                                )
-
-                                rectangles.append(rect)
-                                startPoint = nil
-                                currentPoint = nil
-                            }
-                    )
+                    .gesture(rectangleMaskSelected ? rectangleGestureMasking(size: finalSize) : nil)
                     Spacer()
                 }
             }
@@ -158,5 +132,43 @@ public struct CanvasContentView: View {
         )
     }
 
-    // More views
+    // MARK: - Gestures
+    // Rectangle Gesture (Origin based, and image bound based).
+    private func rectangleGestureMasking(size: CGSize) -> some Gesture {
+        return DragGesture(minimumDistance: 0)
+            .onChanged { value in
+                guard rectangleMaskSelected else { return }
+                if startPoint == nil {
+                    startPoint = value.location
+                }
+                currentPoint = value.location
+            }
+            .onEnded { value in
+                guard rectangleMaskSelected,
+                      let start = startPoint,
+                      let end = currentPoint else {
+                    startPoint = nil
+                    currentPoint = nil
+                    return
+                }
+
+                let imageFrame = CGRect(origin: .zero, size: size)
+
+                let clampedStart = clamp(point: start, to: imageFrame)
+                let clampedEnd = clamp(point: end, to: imageFrame)
+
+                let rect = CGRect(
+                    x: min(clampedStart.x, clampedEnd.x),
+                    y: min(clampedStart.y, clampedEnd.y),
+                    width: abs(clampedEnd.x - clampedStart.x),
+                    height: abs(clampedEnd.y - clampedStart.y)
+                )
+
+                rectangles.append(rect)
+                startPoint = nil
+                currentPoint = nil
+            }
+    }
+
+    // more gestures
 }
