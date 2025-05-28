@@ -10,7 +10,7 @@ import SwiftUI
 public enum ControlEvent {
     case scribble
     case region
-    case fullBlur(CGFloat)
+    case blurIntensityGauge(CGFloat)
     case saving
     case trash
 }
@@ -121,11 +121,11 @@ public struct ControlView: View {
                 }, set: { (newVal) in
                     self.blurIntensity = newVal
                     guard let eventCompletion = eventCompletion else { return }
-                    eventCompletion(.fullBlur(self.blurIntensity))
+                    eventCompletion(.blurIntensityGauge(self.blurIntensity))
                 }), in: minimumBlur...maxiumBlur)
                 .onAppear {
                     // sets the initial value for the blur slider (i.e 5).
-                    eventCompletion?(.fullBlur(self.blurIntensity))
+                    eventCompletion?(.blurIntensityGauge(self.blurIntensity))
                 }
             }
         }
