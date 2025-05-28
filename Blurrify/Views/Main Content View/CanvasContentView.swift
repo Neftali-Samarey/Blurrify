@@ -22,6 +22,9 @@ public struct CanvasContentView: View {
     @State private var startPoint: CGPoint? = nil
     @State private var currentPoint: CGPoint? = nil
     @State private var rectangles: [CGRect] = []
+    @State private var rectanglesRepo: [CGRect] = []
+    @State private var lastImageSize: CGSize = .zero
+    @State private var blurIntensityRadius: CGFloat = 5
 
     // control states
     @State private var rectangleMaskSelected: Bool = false
@@ -45,16 +48,67 @@ public struct CanvasContentView: View {
                 case .scribble:
                     rectangleMaskSelected = false
                 case .region:
-                    rectangleMaskSelected = true
-                case .fullBlur(let blurIntensity):
-                    print("Blur Value: \(blurIntensity)")
-                    rectangleMaskSelected = false
+                    rectangleMaskSelected.toggle()
+                case .blurIntensityGauge(let blurIntensity):
+                    blurIntensityRadius = blurIntensity
                 case .saving:
-                    print("Saving action")
-                    //UIImageWriteToSavedPhotosAlbum(uiImage, nil, nil, nil)
+                    print("Saving item to camera roll.")
+                    /*let format = UIGraphicsImageRendererFormat.default()
+                    format.scale = uiImage.scale
+                    let renderer = UIGraphicsImageRenderer(size: uiImage.size, format: format)
+
+                    let image = renderer.image { context in
+                        // Draw base image first
+                        uiImage.draw(in: CGRect(origin: .zero, size: uiImage.size))
+
+                        // Get the context to draw overlays
+                        let cgContext = context.cgContext
+
+                        // Scale factor if your image in SwiftUI was scaled down compared to uiImage
+                        let scaleX = uiImage.size.width / lastImageSize.width
+                        let scaleY = uiImage.size.height / lastImageSize.height
+
+                        // Draw saved rectangles
+                        for rect in rectangles {
+                            let scaledRect = CGRect(
+                                x: rect.origin.x * scaleX,
+                                y: rect.origin.y * scaleY,
+                                width: rect.size.width * scaleX,
+                                height: rect.size.height * scaleY
+                            )
+
+                            cgContext.setFillColor(UIColor.black.cgColor)
+                            cgContext.fill(scaledRect)
+                        }
+                    }
+
+                    UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)*/
                 case .trash:
                     completion(.trash)
                 }
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button(action: {
+                    // Undo action
+                    if let lastItem = rectangles.popLast() {
+                        rectanglesRepo.append(lastItem)
+                    }
+                }) {
+                    Image(systemName: "arrow.uturn.backward")
+                }
+                .disabled(rectangles.isEmpty)
+
+                Button(action: {
+                    // Redo action
+                    if let lastmostItem = rectanglesRepo.popLast() {
+                        rectangles.append(lastmostItem)
+                    }
+                }) {
+                    Image(systemName: "arrow.uturn.forward")
+                }
+                .disabled(rectanglesRepo.isEmpty)
             }
         }
         .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
@@ -91,9 +145,9 @@ public struct CanvasContentView: View {
                             ZStack {
                                 ForEach(rectangles.indices, id: \.self) { index in
                                     let rect = rectangles[index]
-                                    Rectangle()
-                                        .fill(Color.yellow.opacity(0.6))
+                                    BackdropBlurView(radius: blurIntensityRadius)
                                         .frame(width: rect.width, height: rect.height)
+                                        .clipShape(Rectangle())
                                         .position(x: rect.midX, y: rect.midY)
                                 }
 
@@ -118,6 +172,10 @@ public struct CanvasContentView: View {
                         }
                     }
                     .frame(width: finalSize.width, height: finalSize.height)
+                    .onAppear {
+                        // not sure this works yet .. double check when time available.
+                        lastImageSize = finalSize
+                    }
                     .gesture(rectangleMaskSelected ? rectangleGestureMasking(size: finalSize) : nil)
                     Spacer()
                 }
@@ -165,6 +223,7 @@ public struct CanvasContentView: View {
                 )
 
                 rectangles.append(rect)
+                rectanglesRepo.removeAll()
                 startPoint = nil
                 currentPoint = nil
             }
