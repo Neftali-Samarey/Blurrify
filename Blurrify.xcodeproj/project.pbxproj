@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED2278EA2DE1722200A991FD /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = ED2278E92DE1722200A991FD /* Zoomable */; };
+		ED59F7322DE692B300B7DA6A /* CanvasContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */; };
 		EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */; };
 		EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */; };
 		EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = EDC4E6B82BDE9161001EA129 /* AlertKit */; };
@@ -17,9 +19,11 @@
 		EDE4505D2BDBFB5F0058C512 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDE4505C2BDBFB5F0058C512 /* Preview Assets.xcassets */; };
 		EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */; };
 		EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED03F42DDD9151003F3AF1 /* CanvasView.swift */; };
+		EDED03F72DDEBE56003F3AF1 /* ImageEditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED03F62DDEBE56003F3AF1 /* ImageEditService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasContentView.swift; sourceTree = "<group>"; };
 		EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6EF2BEFF583001EA129 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
@@ -30,6 +34,7 @@
 		EDE4505C2BDBFB5F0058C512 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryService.swift; sourceTree = "<group>"; };
 		EDED03F42DDD9151003F3AF1 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		EDED03F62DDEBE56003F3AF1 /* ImageEditService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */,
+				ED2278EA2DE1722200A991FD /* Zoomable in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */,
+				EDED03F62DDEBE56003F3AF1 /* ImageEditService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -128,6 +135,7 @@
 			children = (
 				EDE450572BDBFB5D0058C512 /* MainContentView.swift */,
 				EDED03F42DDD9151003F3AF1 /* CanvasView.swift */,
+				ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */,
 			);
 			path = "Main Content View";
 			sourceTree = "<group>";
@@ -150,6 +158,7 @@
 			name = Blurrify;
 			packageProductDependencies = (
 				EDC4E6B82BDE9161001EA129 /* AlertKit */,
+				ED2278E92DE1722200A991FD /* Zoomable */,
 			);
 			productName = Blurrify;
 			productReference = EDE450522BDBFB5D0058C512 /* Blurrify.app */;
@@ -181,6 +190,7 @@
 			mainGroup = EDE450492BDBFB5D0058C512;
 			packageReferences = (
 				EDC4E6B72BDE9161001EA129 /* XCRemoteSwiftPackageReference "AlertKit" */,
+				ED2278E82DE1722200A991FD /* XCRemoteSwiftPackageReference "Zoomable" */,
 			);
 			productRefGroup = EDE450532BDBFB5D0058C512 /* Products */;
 			projectDirPath = "";
@@ -211,8 +221,10 @@
 				EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */,
 				EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
+				EDED03F72DDEBE56003F3AF1 /* ImageEditService.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */,
 				EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */,
+				ED59F7322DE692B300B7DA6A /* CanvasContentView.swift in Sources */,
 				EDC4E6F02BEFF583001EA129 /* ControlView.swift in Sources */,
 				EDE450562BDBFB5D0058C512 /* BlurrifyApp.swift in Sources */,
 			);
@@ -426,6 +438,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		ED2278E82DE1722200A991FD /* XCRemoteSwiftPackageReference "Zoomable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ryohey/Zoomable.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		EDC4E6B72BDE9161001EA129 /* XCRemoteSwiftPackageReference "AlertKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparrowcode/AlertKit";
@@ -437,6 +457,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		ED2278E92DE1722200A991FD /* Zoomable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED2278E82DE1722200A991FD /* XCRemoteSwiftPackageReference "Zoomable" */;
+			productName = Zoomable;
+		};
 		EDC4E6B82BDE9161001EA129 /* AlertKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EDC4E6B72BDE9161001EA129 /* XCRemoteSwiftPackageReference "AlertKit" */;

@@ -17,14 +17,14 @@ public enum ControlEvent {
 
 public struct ControlView: View {
 
-    @State private var blurIntensity: CGFloat = 0
+    @State private var blurIntensity: CGFloat = 5
     @State private var isFullBlurSelected: Bool = false
     @State private var isScribbleSelected: Bool = false
     @State private var isShowingSliderItem: Bool = false
 
     var eventCompletion: ((ControlEvent) -> Void)?
     let minimumBlur: CGFloat = 0
-    let maxiumBlur: CGFloat = 75
+    let maxiumBlur: CGFloat = 20
 
     public init(eventCompletion: ((ControlEvent) -> Void)? = nil) {
         self.eventCompletion = eventCompletion
@@ -108,8 +108,6 @@ public struct ControlView: View {
             // back button
             Button {
                 isShowingSliderItem.toggle()
-                isFullBlurSelected = false
-                isScribbleSelected = false
             } label: {
                 Image(systemName: "chevron.left")
                     .foregroundStyle(.white)
@@ -125,6 +123,10 @@ public struct ControlView: View {
                     guard let eventCompletion = eventCompletion else { return }
                     eventCompletion(.fullBlur(self.blurIntensity))
                 }), in: minimumBlur...maxiumBlur)
+                .onAppear {
+                    // sets the initial value for the blur slider (i.e 5).
+                    eventCompletion?(.fullBlur(self.blurIntensity))
+                }
             }
         }
     }
