@@ -136,6 +136,7 @@ public struct CanvasView: View {
         }
         .alert(isPresent: $alertPresented, view: successAlert)
         .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
+        .navigationBarBackButtonHidden(true)
     }
 
     // MARK: - Snapshot View

@@ -15,7 +15,7 @@ struct MainContentView: View {
 
     @State private var pickerItem: PhotosPickerItem?
     @State private var selectedUIImage: UIImage?
-    @State private var uiImageSize: CGSize = CGSize(width: 0, height: 0)
+    @State private var uiImageSize: CGSize = .zero
 
     var body: some View {
         NavigationStack {
