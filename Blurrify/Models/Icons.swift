@@ -8,6 +8,7 @@
 import Foundation
 
 public enum Icon: String, CaseIterable {
+    case addImage
     case chevronLeft
     case download
     case pan
@@ -20,6 +21,8 @@ public enum Icon: String, CaseIterable {
 
     var systemName: String {
         switch self {
+        case .addImage:
+            return "photo.badge.plus"
         case .chevronLeft:
             return "chevron.left"
         case .download:

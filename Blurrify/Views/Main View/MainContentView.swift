@@ -23,7 +23,7 @@ struct MainContentView: View {
                 VStack {
                     PhotosPicker(selection: $pickerItem, matching: .images) {
                         VStack(alignment: .center) {
-                            Image(systemName: "photo.badge.plus")
+                            Image(systemName: Icon.addImage.systemName)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 40.0, height: 40.0)
