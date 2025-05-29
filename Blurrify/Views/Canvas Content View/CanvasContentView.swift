@@ -11,6 +11,7 @@ import SwiftUI
 public struct CanvasContentView: View {
 
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.dismiss) private var dimisss
 
     private let successAlert = AlertAppleMusic17View(title: "Image Saved Successfully", subtitle: nil, icon: .done)
 
@@ -25,6 +26,7 @@ public struct CanvasContentView: View {
     // control states
     @State private var rectangleMaskSelected: Bool = false
     @State private var alertPresented: Bool = false
+    @State private var showTrashAlert = false
 
     private let uiImage: UIImage
     private let completion: ((ControlEvent) -> Void)
@@ -85,13 +87,24 @@ public struct CanvasContentView: View {
                     saveImageToPhotos(uiImage) { error in
                         if let error = error {
                             print("Error saving to camera roll. Error: \(error)")
+                            HapticFeedbackService.vibrate(.error)
                         } else {
                             alertPresented = true
+                            HapticFeedbackService.vibrate(.success)
                         }
                     }
                 case .trash:
-                    completion(.trash)
+                    showTrashAlert = true
                 }
+            }
+            .alert("Are you sure you want to discard everything?", isPresented: $showTrashAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete", role: .destructive) {
+                    completion(.trash)
+                    dimisss()
+                }
+            } message: {
+                Text("This action cannot be undone.")
             }
         }
         .toolbar {
@@ -101,6 +114,8 @@ public struct CanvasContentView: View {
                     if let lastItem = rectangles.popLast() {
                         rectanglesRepo.append(lastItem)
                     }
+
+                    HapticFeedbackService.vibrate(.selection)
                 }) {
                     Image(systemName: "arrow.uturn.backward")
                 }
@@ -111,6 +126,8 @@ public struct CanvasContentView: View {
                     if let lastmostItem = rectanglesRepo.popLast() {
                         rectangles.append(lastmostItem)
                     }
+
+                    HapticFeedbackService.vibrate(.selection)
                 }) {
                     Image(systemName: "arrow.uturn.forward")
                 }
@@ -186,6 +203,7 @@ public struct CanvasContentView: View {
                     .gesture(rectangleMaskSelected ? rectangleGestureMasking(size: finalSize) : nil)
                     Spacer()
                 }
+                .frame(maxWidth: outerGeometry.size.width)
             }
         }
     }
