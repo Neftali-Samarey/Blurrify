@@ -115,7 +115,7 @@ public struct CanvasView: View {
 
                     HapticFeedbackService.vibrate(.selection)
                 }) {
-                    Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
+                    Image(systemName: Icon.pan.systemName)
                 }
                 .hidden()
             }
@@ -129,7 +129,7 @@ public struct CanvasView: View {
 
                     HapticFeedbackService.vibrate(.selection)
                 }) {
-                    Image(systemName: "arrow.uturn.backward")
+                    Image(systemName: Icon.undo.systemName)
                 }
                 .disabled(rectangles.isEmpty)
 
@@ -141,7 +141,7 @@ public struct CanvasView: View {
 
                     HapticFeedbackService.vibrate(.selection)
                 }) {
-                    Image(systemName: "arrow.uturn.forward")
+                    Image(systemName: Icon.redo.systemName)
                 }
                 .disabled(rectanglesRepo.isEmpty)
             }

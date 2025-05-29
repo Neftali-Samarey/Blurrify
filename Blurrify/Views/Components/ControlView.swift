@@ -39,7 +39,7 @@ public struct ControlView: View {
                 guard let eventCompletion = eventCompletion else { return }
                 eventCompletion(.saving)
             } label: {
-                Image(systemName: "square.and.arrow.down")
+                Image(systemName: Icon.download.systemName)
                     .foregroundStyle(.white)
                     .font(.system(size: 23.0))
             }
@@ -49,7 +49,7 @@ public struct ControlView: View {
                 eventCompletion(.trash)
                 HapticFeedbackService.vibrate(.warning)
             } label: {
-                Image(systemName: "trash")
+                Image(systemName: Icon.trash.systemName)
                     .foregroundStyle(.white)
                     .font(.system(size: 23.0))
             }
@@ -78,7 +78,7 @@ public struct ControlView: View {
                     eventCompletion(.scribble)
                     HapticFeedbackService.vibrate(.selection)
                 } label: {
-                    Image(systemName: "scribble.variable")
+                    Image(systemName: Icon.scribble.systemName)
                         .foregroundStyle(isScribbleSelected ? .blue : .white)
                         .font(.system(size: 23.0))
                 }
@@ -93,7 +93,7 @@ public struct ControlView: View {
                     eventCompletion(.region)
                     HapticFeedbackService.vibrate(.selection)
                 } label: {
-                    Image(systemName: "square")
+                    Image(systemName: Icon.square.systemName)
                         .foregroundStyle(isFullBlurSelected ? .blue : .white)
                         .font(.system(size: 23.0))
                 }
@@ -103,7 +103,7 @@ public struct ControlView: View {
                     isShowingSliderItem.toggle()
                     HapticFeedbackService.vibrate(.selection)
                 } label: {
-                    Image(systemName: "switch.2")
+                    Image(systemName: Icon.toggle.systemName)
                         .foregroundStyle(.white)
                         .font(.system(size: 23.0))
                 }
@@ -115,7 +115,7 @@ public struct ControlView: View {
                 isShowingSliderItem.toggle()
                 HapticFeedbackService.vibrate(.selection)
             } label: {
-                Image(systemName: "chevron.left")
+                Image(systemName: Icon.chevronLeft.systemName)
                     .foregroundStyle(.white)
                     .font(.system(size: 23.0))
             }
