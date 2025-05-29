@@ -36,7 +36,7 @@ struct MainContentView: View {
                         .padding([.leading, .trailing], 60)
                     }
                 }
-                .dottedBorder(colorScheme == .dark ? Color.white : Color.primaryBlue.opacity(0.5))
+                .dottedBorder(colorScheme == .dark ? Color.primaryWhite : Color.primaryBlue.opacity(0.5))
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.all)

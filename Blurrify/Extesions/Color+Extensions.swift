@@ -10,6 +10,9 @@ import SwiftUI
 @available(iOS 13.0, *)
 public extension Color {
 
+    // primary white
+    static let primaryWhite = Color(red: 247/255, green: 247/255, blue: 247/255)
+
     // primary blue
     static let primaryBlue = Color(red: 19/255, green: 15/255, blue: 64/255)
 

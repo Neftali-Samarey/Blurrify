@@ -147,7 +147,7 @@ public struct CanvasView: View {
             }
         }
         .alert(isPresent: $alertPresented, view: successAlert)
-        .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
+        .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.primaryWhite)
         .navigationBarBackButtonHidden(true)
     }
 
