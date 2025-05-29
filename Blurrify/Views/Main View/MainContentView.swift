@@ -47,7 +47,7 @@ struct MainContentView: View {
                 }
             )) {
                 if let selectedImage = selectedUIImage {
-                    CanvasContentView(image: selectedImage) { event in
+                    CanvasView(image: selectedImage) { event in
                         switch event {
                         case .trash:
                             clear()

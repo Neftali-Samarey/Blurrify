@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		ED2278EA2DE1722200A991FD /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = ED2278E92DE1722200A991FD /* Zoomable */; };
-		ED59F7322DE692B300B7DA6A /* CanvasContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */; };
-		ED59F7352DE6D5B800B7DA6A /* CanvasContentView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7342DE6D5AF00B7DA6A /* CanvasContentView+Extensions.swift */; };
+		ED59F7322DE692B300B7DA6A /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7312DE692B300B7DA6A /* CanvasView.swift */; };
+		ED59F7352DE6D5B800B7DA6A /* CanvasView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7342DE6D5AF00B7DA6A /* CanvasView+Extensions.swift */; };
 		ED59F7372DE6D92700B7DA6A /* ImageSaveHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7362DE6D91F00B7DA6A /* ImageSaveHelper.swift */; };
 		ED59F7392DE7EAAC00B7DA6A /* HapticFeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7382DE7EAA300B7DA6A /* HapticFeedbackService.swift */; };
 		ED59F73B2DE7F2C900B7DA6A /* BackdropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F73A2DE7F2C000B7DA6A /* BackdropView.swift */; };
@@ -25,8 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasContentView.swift; sourceTree = "<group>"; };
-		ED59F7342DE6D5AF00B7DA6A /* CanvasContentView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasContentView+Extensions.swift"; sourceTree = "<group>"; };
+		ED59F7312DE692B300B7DA6A /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		ED59F7342DE6D5AF00B7DA6A /* CanvasView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasView+Extensions.swift"; sourceTree = "<group>"; };
 		ED59F7362DE6D91F00B7DA6A /* ImageSaveHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveHelper.swift; sourceTree = "<group>"; };
 		ED59F7382DE7EAA300B7DA6A /* HapticFeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackService.swift; sourceTree = "<group>"; };
 		ED59F73A2DE7F2C000B7DA6A /* BackdropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackdropView.swift; sourceTree = "<group>"; };
@@ -57,8 +57,8 @@
 		ED59F7332DE6D57500B7DA6A /* Canvas View */ = {
 			isa = PBXGroup;
 			children = (
-				ED59F7312DE692B300B7DA6A /* CanvasContentView.swift */,
-				ED59F7342DE6D5AF00B7DA6A /* CanvasContentView+Extensions.swift */,
+				ED59F7312DE692B300B7DA6A /* CanvasView.swift */,
+				ED59F7342DE6D5AF00B7DA6A /* CanvasView+Extensions.swift */,
 			);
 			path = "Canvas View";
 			sourceTree = "<group>";
@@ -232,14 +232,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED59F7352DE6D5B800B7DA6A /* CanvasContentView+Extensions.swift in Sources */,
+				ED59F7352DE6D5B800B7DA6A /* CanvasView+Extensions.swift in Sources */,
 				EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */,
 				ED59F7372DE6D92700B7DA6A /* ImageSaveHelper.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
 				ED59F73B2DE7F2C900B7DA6A /* BackdropView.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */,
 				EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */,
-				ED59F7322DE692B300B7DA6A /* CanvasContentView.swift in Sources */,
+				ED59F7322DE692B300B7DA6A /* CanvasView.swift in Sources */,
 				ED59F7392DE7EAAC00B7DA6A /* HapticFeedbackService.swift in Sources */,
 				EDC4E6F02BEFF583001EA129 /* ControlView.swift in Sources */,
 				EDE450562BDBFB5D0058C512 /* BlurrifyApp.swift in Sources */,

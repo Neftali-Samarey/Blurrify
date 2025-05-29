@@ -13,7 +13,7 @@ struct ImageFramePreferenceKey: PreferenceKey {
     }
 }
 
-extension CanvasContentView {
+extension CanvasView {
 
     // save image
     func saveImageToPhotos(_ image: UIImage, completion: @escaping (Error?) -> Void) {

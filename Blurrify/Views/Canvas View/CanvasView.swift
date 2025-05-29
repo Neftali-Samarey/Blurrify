@@ -1,5 +1,5 @@
 //
-//  CanvasContentView.swift
+//  CanvasView.swift
 //  Blurrify
 //
 //  Created by Neftali Samarey on 5/27/25.
@@ -8,7 +8,7 @@
 import AlertKit
 import SwiftUI
 
-public struct CanvasContentView: View {
+public struct CanvasView: View {
 
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.dismiss) private var dimisss
