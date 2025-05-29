@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - UIView Extension
+
 extension View {
 
     func dottedBorder(_ color: Color) -> some View {
@@ -17,7 +19,21 @@ extension View {
     }
 }
 
+// MARK: - UIImage Extension
+
 extension UIImage {
+
+    func normalizedImage() -> UIImage {
+        if imageOrientation == .up {
+            return self
+        }
+
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(in: CGRect(origin: .zero, size: size))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return normalizedImage ?? self
+    }
 
     /*func blurredImageWithBlurredEdges(inputRadius: CGFloat) -> UIImage? {
 
