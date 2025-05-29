@@ -107,7 +107,19 @@ public struct CanvasView: View {
                 Text("This action cannot be undone.")
             }
         }
+        .toolbarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItemGroup(placement: .topBarLeading) {
+                Button(action: {
+                    // action
+
+                    HapticFeedbackService.vibrate(.selection)
+                }) {
+                    Image(systemName: "rectangle.and.arrow.up.right.and.arrow.down.left")
+                }
+                .hidden()
+            }
+
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button(action: {
                     // Undo action
