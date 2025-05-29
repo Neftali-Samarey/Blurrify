@@ -22,7 +22,6 @@
 		EDE4505D2BDBFB5F0058C512 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDE4505C2BDBFB5F0058C512 /* Preview Assets.xcassets */; };
 		EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */; };
 		EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED03F42DDD9151003F3AF1 /* CanvasView.swift */; };
-		EDED03F72DDEBE56003F3AF1 /* ImageEditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDED03F62DDEBE56003F3AF1 /* ImageEditService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +39,6 @@
 		EDE4505C2BDBFB5F0058C512 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryService.swift; sourceTree = "<group>"; };
 		EDED03F42DDD9151003F3AF1 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
-		EDED03F62DDEBE56003F3AF1 /* ImageEditService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEditService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,7 +124,6 @@
 				ED59F7382DE7EAA300B7DA6A /* HapticFeedbackService.swift */,
 				ED59F7362DE6D91F00B7DA6A /* ImageSaveHelper.swift */,
 				EDE450642BDC161C0058C512 /* PhotoGalleryService.swift */,
-				EDED03F62DDEBE56003F3AF1 /* ImageEditService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -240,7 +237,6 @@
 				EDED03F52DDD9151003F3AF1 /* CanvasView.swift in Sources */,
 				ED59F7372DE6D92700B7DA6A /* ImageSaveHelper.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
-				EDED03F72DDEBE56003F3AF1 /* ImageEditService.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */,
 				EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */,
 				ED59F7322DE692B300B7DA6A /* CanvasContentView.swift in Sources */,
