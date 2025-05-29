@@ -43,9 +43,11 @@ public struct ControlView: View {
                     .foregroundStyle(.white)
                     .font(.system(size: 23.0))
             }
+
             Button {
                 guard let eventCompletion = eventCompletion else { return }
                 eventCompletion(.trash)
+                HapticFeedbackService.vibrate(.warning)
             } label: {
                 Image(systemName: "trash")
                     .foregroundStyle(.white)
@@ -74,6 +76,7 @@ public struct ControlView: View {
 
                     guard let eventCompletion = eventCompletion else { return }
                     eventCompletion(.scribble)
+                    HapticFeedbackService.vibrate(.selection)
                 } label: {
                     Image(systemName: "scribble.variable")
                         .foregroundStyle(isScribbleSelected ? .blue : .white)
@@ -88,6 +91,7 @@ public struct ControlView: View {
 
                     guard let eventCompletion = eventCompletion else { return }
                     eventCompletion(.region)
+                    HapticFeedbackService.vibrate(.selection)
                 } label: {
                     Image(systemName: "square")
                         .foregroundStyle(isFullBlurSelected ? .blue : .white)
@@ -97,6 +101,7 @@ public struct ControlView: View {
                 // whole screen
                 Button {
                     isShowingSliderItem.toggle()
+                    HapticFeedbackService.vibrate(.selection)
                 } label: {
                     Image(systemName: "switch.2")
                         .foregroundStyle(.white)
@@ -108,6 +113,7 @@ public struct ControlView: View {
             // back button
             Button {
                 isShowingSliderItem.toggle()
+                HapticFeedbackService.vibrate(.selection)
             } label: {
                 Image(systemName: "chevron.left")
                     .foregroundStyle(.white)
