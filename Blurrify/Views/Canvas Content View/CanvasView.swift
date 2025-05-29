@@ -83,9 +83,6 @@ public struct CanvasView: View {
 
     // Move into service
     @State private var blurRadius: CGFloat = 0.0
-
-    // Initialize editing service here
-    private var imageService = ImageEditService()
     @State private var imageSize: CGSize = CGSize(width: 1206, height: 2144)
 
     public init(image: Image, size: CGSize, completion: @escaping ((ControlEvent) -> Void)) {
