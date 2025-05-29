@@ -8,7 +8,7 @@ Blurrify is a small utility photography app that allows you to quickly edit a wa
 
 ## Demo
 <p align="center">
-<img src='images/redacted-convo' title='App Icon' width='230px' alt='App Walkthrough' />
+<img src='images/redacted-convo.png' title='App Icon' width='230px' alt='App Walkthrough' />
 </p>
 
 ## License
