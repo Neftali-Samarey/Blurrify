@@ -7,6 +7,8 @@
 
 import AlertKit
 import SwiftUI
+import CoreImage
+import CoreImage.CIFilterBuiltins
 
 public struct CanvasView: View {
 
@@ -14,6 +16,7 @@ public struct CanvasView: View {
     @Environment(\.dismiss) private var dimisss
 
     private let successAlert = AlertAppleMusic17View(title: "Image Saved Successfully", subtitle: nil, icon: .done)
+    private let errorAlert = AlertAppleMusic17View(title: "Unable to save image", subtitle: nil, icon: .error)
 
     // image states
     @State private var startPoint: CGPoint? = nil
@@ -26,6 +29,7 @@ public struct CanvasView: View {
     // control states
     @State private var rectangleMaskSelected: Bool = false
     @State private var alertPresented: Bool = false
+    @State private var errorPresented: Bool = false
     @State private var showTrashAlert = false
 
     private let uiImage: UIImage
@@ -83,9 +87,73 @@ public struct CanvasView: View {
 
                     UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)*/
 
+                    /*let format = UIGraphicsImageRendererFormat.default()
+                    format.scale = uiImage.scale
+                    let renderer = UIGraphicsImageRenderer(size: uiImage.size, format: format)*/
+
+                    /*
+                    // test
+                    let context = CIContext()
+                    let filter = CIFilter(name: "CISepiaTone")!
+                    filter.setValue(0.8, forKey: kCIInputIntensityKey)
+                    let testImage = CIImage(image: uiImage)
+                    //testImage ~ immutable object representing an image.
+                    filter.setValue(testImage, forKey: kCIInputImageKey)
+                    let result = filter.outputImage!
+                    let cgImage = context.createCGImage(result, from: result.extent)
+                    guard let finalImage = cgImage else { return }
+
+                    // conver the finalImage to UIImage.
+                    let finalized = UIImage(cgImage: finalImage)
+                    */
+                    // end
+
+                    // working sample below
+                    /*
+                     let format = UIGraphicsImageRendererFormat.default()
+                    format.scale = uiImage.scale
+                    let renderer = UIGraphicsImageRenderer(size: uiImage.size, format: format)
+
+                    let image = renderer.image { context in
+                        // Draw base image
+                        uiImage.draw(in: CGRect(origin: .zero, size: uiImage.size))
+
+                        let cgContext = context.cgContext
+
+                        let scaleX = uiImage.size.width / lastImageSize.width
+                        let scaleY = uiImage.size.height / lastImageSize.height
+
+                        guard let ciImage = CIImage(image: uiImage) else { return }
+                        let ciContext = CIContext(cgContext: cgContext, options: nil)
+
+                        for rect in rectangles {
+                            let scaledRect = CGRect(
+                                x: rect.origin.x * scaleX,
+                                y: rect.origin.y * scaleY,
+                                width: rect.size.width * scaleX,
+                                height: rect.size.height * scaleY
+                            )
+
+                            // Crop region from image
+                            let cropped = ciImage.cropped(to: scaledRect)
+
+                            // Apply blur
+                            let blurFilter = CIFilter.boxBlur()
+                            blurFilter.inputImage = cropped
+                            blurFilter.radius = 10
+
+
+                            guard let blurredOutput = blurFilter.outputImage else { continue }
+
+                            // Draw blurred result back into context at the same position
+                            ciContext.draw(blurredOutput, in: scaledRect, from: cropped.extent)
+                        }
+                    }*/
+
                     // called last after all edits.
                     saveImageToPhotos(uiImage) { error in
                         if let error = error {
+                            errorPresented = true
                             print("Error saving to camera roll. Error: \(error)")
                             HapticFeedbackService.vibrate(.error)
                         } else {
@@ -147,6 +215,7 @@ public struct CanvasView: View {
             }
         }
         .alert(isPresent: $alertPresented, view: successAlert)
+        .alert(isPresent: $errorPresented, view: errorAlert)
         .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.primaryWhite)
         .navigationBarBackButtonHidden(true)
     }
