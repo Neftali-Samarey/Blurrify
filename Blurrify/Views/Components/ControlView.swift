@@ -56,7 +56,7 @@ public struct ControlView: View {
             Spacer()
         }
         .frame(height: 65)
-        .background(Color.black.opacity(0.6))
+        .background(Color.black.opacity(0.85))
         .cornerRadius(10)
         .padding(.leading, 20)
         .padding(.trailing, 20)
@@ -126,9 +126,11 @@ public struct ControlView: View {
                     self.blurIntensity
                 }, set: { (newVal) in
                     self.blurIntensity = newVal
-                    guard let eventCompletion = eventCompletion else { return }
-                    eventCompletion(.blurIntensityGauge(self.blurIntensity))
                 }), in: minimumBlur...maxiumBlur)
+                .onChange(of: blurIntensity, { _, newValue in
+                    guard let eventCompletion = eventCompletion else { return }
+                    eventCompletion(.blurIntensityGauge(newValue))
+                })
                 .onAppear {
                     // sets the initial value for the blur slider (i.e 5).
                     eventCompletion?(.blurIntensityGauge(self.blurIntensity))
