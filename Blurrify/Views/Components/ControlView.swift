@@ -39,13 +39,17 @@ private enum ActiveTool {
 public struct ControlView: View {
 
     @State private var blurIntensity: CGFloat = 5
+    @State private var scribbleWidth: CGFloat = 5       // not being used at the moment
     @State private var activeTool: ActiveTool = .none
     @State private var isShowingBlurSlider = false
+    @State private var isShowingScribbleSlider = false  // not being used at the moment
 
     private let controlStyle: ControlStyle
     private let eventCompletion: (ControlEvent) -> Void
     private let minimumBlur: CGFloat = 0
     private let maximumBlur: CGFloat = 20
+    private let mininumWidth: CGFloat = 5               // not being used at the moment
+    private let maximumWidth: CGFloat = 20              // not being used at the moment
 
     public init(
         controlStyle: ControlStyle = .overlay(style: .none),
@@ -75,12 +79,16 @@ public struct ControlView: View {
 private extension ControlView {
     var toolbarButtons: some View {
         HStack(spacing: 20) {
-            toolbarButton(
-                systemImage: Icon.scribble.systemName,
-                isSelected: activeTool == .scribble
+            toolbarButton(systemImage: Icon.scribble.systemName,
+                          isSelected: activeTool == .scribble
             ) {
                 toggleTool(.scribble)
                 HapticFeedbackService.vibrate(.selection)
+            } onLongPress: {
+                if activeTool == .scribble {
+                    isShowingScribbleSlider.toggle()
+                    HapticFeedbackService.vibrate(.success)
+                }
             }
 
             toolbarButton(
@@ -180,8 +188,10 @@ private extension ControlView {
         systemImage: String,
         isSelected: Bool = false,
         tint: Color = .white,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
+        onLongPress: (() -> Void)? = nil
     ) -> some View {
+
         Button(action: action) {
             Image(systemName: systemImage)
                 .font(.system(size: 23))
@@ -189,7 +199,14 @@ private extension ControlView {
                     isSelected ? .blue : tint
                 )
                 .frame(width: 32, height: 32)
+                .contentShape(Rectangle())
         }
+        .simultaneousGesture(
+            LongPressGesture(minimumDuration: 0.5)
+                .onEnded { _ in
+                    onLongPress?()
+                }
+        )
     }
 }
 
