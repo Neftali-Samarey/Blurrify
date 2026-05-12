@@ -13,6 +13,7 @@ public enum Icon: String, CaseIterable {
     case download
     case pan
     case scribble
+    case glimmer
     case square
     case redo
     case toggle
@@ -31,6 +32,8 @@ public enum Icon: String, CaseIterable {
             return "rectangle.and.arrow.up.right.and.arrow.down.left"
         case .scribble:
             return "scribble.variable"
+        case .glimmer:
+            return "sparkles.2"
         case .square:
             return "square"
         case .redo:
