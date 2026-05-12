@@ -14,6 +14,14 @@ struct ImageFramePreferenceKey: PreferenceKey {
 }
 
 extension CanvasView {
+    
+    /// Resets the zoom/panned position of the image
+    func resetImagePosition() {
+        scale = 1
+        lastScale = 1
+        offset = .zero
+        lastOffset = .zero
+    }
 
     // save image
     func saveImageToPhotos(_ image: UIImage, completion: @escaping (Error?) -> Void) {
