@@ -19,52 +19,56 @@ struct MainContentView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                VStack {
-                    PhotosPicker(selection: $pickerItem, matching: .images) {
-                        VStack(alignment: .center) {
-                            Image(systemName: Icon.addImage.systemName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40.0, height: 40.0)
-                                .tint(colorScheme == .dark ? Color.white : Color.primaryBlue)
-                            Text("Select Image")
-                                .font(.headline)
-                                .padding(.top, 5)
-                        }
-                        .padding([.top, .bottom], 70)
-                        .padding([.leading, .trailing], 60)
-                    }
-                }
-                .dottedBorder(colorScheme == .dark ? Color.primaryWhite : Color.primaryBlue.opacity(0.5))
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .edgesIgnoringSafeArea(.all)
-            .navigationDestination(isPresented: Binding(
-                get: { selectedUIImage != nil },
-                set: { newValue in
-                    if !newValue { selectedUIImage = nil }
-                }
-            )) {
-                if let selectedImage = selectedUIImage {
-                    CanvasView(image: selectedImage) { event in
-                        switch event {
-                        case .trash:
-                            clear()
-                        default: break
+            VStack {
+                ZStack {
+                    VStack {
+                        PhotosPicker(selection: $pickerItem, matching: .images) {
+                            VStack(alignment: .center) {
+                                Image(systemName: Icon.addImage.systemName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40.0, height: 40.0)
+                                    .tint(colorScheme == .dark ? Color.white : Color.primaryBlue)
+                                Text("Select Image")
+                                    .font(.headline)
+                                    .padding(.top, 5)
+                            }
+                            .padding([.top, .bottom], 70)
+                            .padding([.leading, .trailing], 60)
                         }
                     }
+                    .dottedBorder(colorScheme == .dark ? Color.primaryWhite : Color.primaryBlue.opacity(0.5))
                 }
-            }
-            .onChange(of: pickerItem) {
-                Task {
-                    if let data = try? await pickerItem?.loadTransferable(type: Data.self),
-                       let uiImage = UIImage(data: data) {
-                        uiImageSize = uiImage.size
-                        let fixedUIImage = uiImage.normalizedImage()
-                        selectedUIImage = fixedUIImage
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+                .navigationDestination(isPresented: Binding(
+                    get: { selectedUIImage != nil },
+                    set: { newValue in
+                        if !newValue { selectedUIImage = nil }
+                    }
+                )) {
+                    if let selectedImage = selectedUIImage {
+                        CanvasView(image: selectedImage) { event in
+                            switch event {
+                            case .trash:
+                                clear()
+                            default: break
+                            }
+                        }
                     }
                 }
+                .onChange(of: pickerItem) {
+                    Task {
+                        if let data = try? await pickerItem?.loadTransferable(type: Data.self),
+                           let uiImage = UIImage(data: data) {
+                            uiImageSize = uiImage.size
+                            let fixedUIImage = uiImage.normalizedImage()
+                            selectedUIImage = fixedUIImage
+                        }
+                    }
+                }
+
+                // **any disclosure text below**
             }
             .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
         }
