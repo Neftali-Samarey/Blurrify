@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import CoreImage
+import CoreImage.CIFilterBuiltins
 
 public final class BoxBlurProcessor {
     private let originalImage: UIImage
