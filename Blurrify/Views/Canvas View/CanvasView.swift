@@ -8,6 +8,19 @@
 import AlertKit
 import SwiftUI
 
+fileprivate enum AutoResizeCorner: CaseIterable {
+    case topLeft, topRight, bottomLeft, bottomRight
+
+    func anchor(in rect: CGRect) -> CGPoint {
+        switch self {
+        case .topLeft: return CGPoint(x: rect.minX, y: rect.minY)
+        case .topRight: return CGPoint(x: rect.maxX, y: rect.minY)
+        case .bottomLeft: return CGPoint(x: rect.minX, y: rect.maxY)
+        case .bottomRight: return CGPoint(x: rect.maxX, y: rect.maxY)
+        }
+    }
+}
+
 public struct CanvasView: View {
 
     @Environment(\.colorScheme) var colorScheme
@@ -28,6 +41,11 @@ public struct CanvasView: View {
     // control states
     @State private var rectangleMaskSelected: Bool = false
     @State private var scribbleMaskSelected: Bool = false
+    @State private var autoRedactMode: Bool = false
+    @State private var selectedAutoMaskID: UUID?
+    @State private var didRunVisionForCurrentAutoSession: Bool = false
+    @State private var autoMoveDragBase: CGRect?
+    @State private var autoResizeSession: (corner: AutoResizeCorner, startRect: CGRect)?
     @State private var currentStroke: [CGPoint] = []
     @State private var alertPresented: Bool = false
     @State private var errorPresented: Bool = false
@@ -153,6 +171,7 @@ public struct CanvasView: View {
                                             .frame(width: rect.width, height: rect.height)
                                             .clipShape(Rectangle())
                                             .position(x: rect.midX, y: rect.midY)
+                                            .allowsHitTesting(false)
                                     case .scribble(let points):
                                         BackdropBlurView(radius: blurIntensityRadius)
                                             .mask(
@@ -166,6 +185,7 @@ public struct CanvasView: View {
                                                         )
                                                     )
                                             )
+                                            .allowsHitTesting(false)
                                     }
                                 }
                                 
@@ -200,14 +220,24 @@ public struct CanvasView: View {
                                         .frame(width: rect.width, height: rect.height)
                                         .position(x: rect.midX, y: rect.midY)
                                 }
+
+                                if autoRedactMode {
+                                    autoRedactChromeLayer(canvasSize: finalSize)
+                                }
                             }
                             .clipped()
+                            .optionalSimultaneousGesture(autoRedactMode, autoRedactCanvasTapGesture(canvasSize: finalSize))
                         }
                     }
                     .frame(width: finalSize.width, height: finalSize.height)
                     .onAppear {
                         // not sure this works yet .. double check when time available.
                         lastImageSize = finalSize
+                        scheduleVisionScanIfReady()
+                    }
+                    .onChange(of: outerGeometry.size) { _, _ in
+                        lastImageSize = finalSize
+                        scheduleVisionScanIfReady()
                     }
                     .gesture((rectangleMaskSelected || scribbleMaskSelected) ? canvasMaskingGesture(size: finalSize) : nil)
                     Spacer()
@@ -315,6 +345,214 @@ extension CanvasView {
     }
 }
 
+// MARK: - Auto redact (Vision + layout)
+
+extension CanvasView {
+
+    private func scheduleVisionScanIfReady() {
+        guard autoRedactMode, !didRunVisionForCurrentAutoSession, lastImageSize.width > 0, lastImageSize.height > 0 else {
+            return
+        }
+        didRunVisionForCurrentAutoSession = true
+        performSensitiveTextScan()
+    }
+
+    private func performSensitiveTextScan() {
+        let image = uiImage
+        let size = lastImageSize
+        Task {
+            let rects = await Task.detached(priority: .userInitiated) {
+                SensitiveTextVisionService.allSensitiveCanvasRects(in: image, canvasSize: size)
+            }.value
+            await MainActor.run {
+                guard autoRedactMode else { return }
+                let pad: CGFloat = 6
+                let canvasBounds = CGRect(origin: .zero, size: size)
+                var firstNewSelection: UUID?
+                for rect in rects {
+                    let expanded = rect.insetBy(dx: -pad, dy: -pad)
+                    let clamped = expanded.intersection(canvasBounds)
+                    guard clamped.width > 8, clamped.height > 8 else { continue }
+                    let edit = CanvasMaskEdit(kind: .rectangle(clamped), isAutoDetected: true)
+                    maskEdits.append(edit)
+                    if firstNewSelection == nil {
+                        firstNewSelection = edit.id
+                    }
+                }
+                guard firstNewSelection != nil else {
+                    HapticFeedbackService.vibrate(.warning)
+                    return
+                }
+                maskEditsRedo.removeAll()
+                selectedAutoMaskID = firstNewSelection
+                HapticFeedbackService.vibrate(.success)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func autoRedactChromeLayer(canvasSize: CGSize) -> some View {
+        if let sid = selectedAutoMaskID,
+           let edit = maskEdits.first(where: { $0.id == sid }),
+           edit.isAutoDetected,
+           case .rectangle(let r) = edit.kind {
+            autoRedactSelectionViews(rect: r, maskId: sid, canvasSize: canvasSize)
+        }
+    }
+
+    @ViewBuilder
+    private func autoRedactSelectionViews(rect: CGRect, maskId: UUID, canvasSize: CGSize) -> some View {
+        Rectangle()
+            .stroke(Color.blue, style: StrokeStyle(lineWidth: 2, dash: [6]))
+            .frame(width: rect.width, height: rect.height)
+            .position(x: rect.midX, y: rect.midY)
+            .allowsHitTesting(false)
+
+        Rectangle()
+            .fill(Color.clear)
+            .frame(width: rect.width, height: rect.height)
+            .position(x: rect.midX, y: rect.midY)
+            .contentShape(Rectangle())
+            .gesture(autoRedactMoveGesture(maskId: maskId, canvasSize: canvasSize))
+
+        ForEach(Array(AutoResizeCorner.allCases), id: \.self) { corner in
+            Circle()
+                .fill(Color.white)
+                .overlay(Circle().stroke(Color.blue, lineWidth: 2))
+                .frame(width: 22, height: 22)
+                .position(corner.anchor(in: rect))
+                .highPriorityGesture(autoRedactResizeGesture(corner: corner, maskId: maskId, canvasSize: canvasSize))
+        }
+    }
+
+    private func autoRedactCanvasTapGesture(canvasSize: CGSize) -> some Gesture {
+        DragGesture(minimumDistance: 0)
+            .onEnded { value in
+                guard autoRedactMode else { return }
+                let drag = hypot(value.translation.width, value.translation.height)
+                guard drag < 12 else { return }
+                handleAutoRedactTap(at: value.startLocation, canvasSize: canvasSize)
+            }
+    }
+
+    private func autoRedactMoveGesture(maskId: UUID, canvasSize: CGSize) -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if autoMoveDragBase == nil {
+                    autoMoveDragBase = rectForAutoMask(id: maskId)
+                }
+                guard let base = autoMoveDragBase else { return }
+                let proposed = base.offsetBy(dx: value.translation.width, dy: value.translation.height)
+                let clamped = clampRedactRect(proposed, canvas: canvasSize)
+                replaceAutoMaskRect(id: maskId, with: clamped)
+            }
+            .onEnded { _ in
+                autoMoveDragBase = nil
+            }
+    }
+
+    private func autoRedactResizeGesture(corner: AutoResizeCorner, maskId: UUID, canvasSize: CGSize) -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                if autoResizeSession == nil {
+                    guard let start = rectForAutoMask(id: maskId) else { return }
+                    autoResizeSession = (corner, start)
+                }
+                guard let session = autoResizeSession else { return }
+                let next = resizedRect(
+                    from: session.startRect,
+                    corner: session.corner,
+                    translation: value.translation,
+                    canvas: canvasSize
+                )
+                replaceAutoMaskRect(id: maskId, with: next)
+            }
+            .onEnded { _ in
+                autoResizeSession = nil
+            }
+    }
+
+    private func handleAutoRedactTap(at point: CGPoint, canvasSize: CGSize) {
+        let bounds = CGRect(origin: .zero, size: canvasSize)
+        guard bounds.contains(point) else {
+            selectedAutoMaskID = nil
+            return
+        }
+        for edit in maskEdits.reversed() where edit.isAutoDetected {
+            if case .rectangle(let r) = edit.kind, r.contains(point) {
+                selectedAutoMaskID = edit.id
+                HapticFeedbackService.vibrate(.selection)
+                return
+            }
+        }
+        selectedAutoMaskID = nil
+    }
+
+    private func rectForAutoMask(id: UUID) -> CGRect? {
+        guard let edit = maskEdits.first(where: { $0.id == id }),
+              edit.isAutoDetected,
+              case .rectangle(let r) = edit.kind else { return nil }
+        return r
+    }
+
+    private func replaceAutoMaskRect(id: UUID, with newRect: CGRect) {
+        guard let index = maskEdits.firstIndex(where: { $0.id == id }) else { return }
+        var edit = maskEdits[index]
+        guard edit.isAutoDetected else { return }
+        guard case .rectangle = edit.kind else { return }
+        edit.kind = .rectangle(newRect)
+        maskEdits[index] = edit
+    }
+
+    private func clampRedactRect(_ rect: CGRect, canvas: CGSize, minSide: CGFloat = 28) -> CGRect {
+        var r = rect
+        r.size.width = max(r.size.width, minSide)
+        r.size.height = max(r.size.height, minSide)
+        if r.minX < 0 { r.origin.x = 0 }
+        if r.minY < 0 { r.origin.y = 0 }
+        if r.maxX > canvas.width {
+            r.origin.x = max(0, canvas.width - r.width)
+        }
+        if r.maxY > canvas.height {
+            r.origin.y = max(0, canvas.height - r.height)
+        }
+        r.size.width = min(r.size.width, canvas.width - r.origin.x)
+        r.size.height = min(r.size.height, canvas.height - r.origin.y)
+        return r
+    }
+
+    private func resizedRect(
+        from start: CGRect,
+        corner: AutoResizeCorner,
+        translation: CGSize,
+        canvas: CGSize,
+        minSide: CGFloat = 28
+    ) -> CGRect {
+        let tx = translation.width
+        let ty = translation.height
+        let r: CGRect
+        switch corner {
+        case .bottomRight:
+            let w = max(minSide, start.width + tx)
+            let h = max(minSide, start.height + ty)
+            r = CGRect(x: start.minX, y: start.minY, width: w, height: h)
+        case .bottomLeft:
+            let newMinX = min(start.maxX - minSide, start.minX + tx)
+            let h = max(minSide, start.height + ty)
+            r = CGRect(x: newMinX, y: start.minY, width: start.maxX - newMinX, height: h)
+        case .topRight:
+            let newMinY = min(start.maxY - minSide, start.minY + ty)
+            let w = max(minSide, start.width + tx)
+            r = CGRect(x: start.minX, y: newMinY, width: w, height: start.maxY - newMinY)
+        case .topLeft:
+            let newMinX = min(start.maxX - minSide, start.minX + tx)
+            let newMinY = min(start.maxY - minSide, start.minY + ty)
+            r = CGRect(x: newMinX, y: newMinY, width: start.maxX - newMinX, height: start.maxY - newMinY)
+        }
+        return clampRedactRect(r, canvas: canvas, minSide: minSide)
+    }
+}
+
 // MARK: - Image action events
 
 fileprivate extension CanvasView {
@@ -325,6 +563,9 @@ fileprivate extension CanvasView {
             scribbleMaskSelected = isEnabled
             if isEnabled {
                 rectangleMaskSelected = false
+                autoRedactMode = false
+                selectedAutoMaskID = nil
+                didRunVisionForCurrentAutoSession = false
                 startPoint = nil
                 currentPoint = nil
             } else {
@@ -334,18 +575,30 @@ fileprivate extension CanvasView {
             rectangleMaskSelected = isEnabled
             if isEnabled {
                 scribbleMaskSelected = false
+                autoRedactMode = false
+                selectedAutoMaskID = nil
+                didRunVisionForCurrentAutoSession = false
                 currentStroke = []
             } else {
                 startPoint = nil
                 currentPoint = nil
             }
         case .autoRedacting(let isEnabled):
+            autoRedactMode = isEnabled
             if isEnabled {
                 rectangleMaskSelected = false
                 scribbleMaskSelected = false
                 startPoint = nil
                 currentPoint = nil
                 currentStroke = []
+                maskEdits.removeAll { $0.isAutoDetected }
+                maskEditsRedo.removeAll()
+                selectedAutoMaskID = nil
+                didRunVisionForCurrentAutoSession = false
+                scheduleVisionScanIfReady()
+            } else {
+                selectedAutoMaskID = nil
+                didRunVisionForCurrentAutoSession = false
             }
         case .blurIntensityChanged(let blurIntensity):
             blurIntensityRadius = blurIntensity
@@ -386,8 +639,15 @@ fileprivate enum CanvasMaskKind {
 }
 
 fileprivate struct CanvasMaskEdit: Identifiable {
-    let id = UUID()
-    let kind: CanvasMaskKind
+    let id: UUID
+    var kind: CanvasMaskKind
+    let isAutoDetected: Bool
+
+    init(id: UUID = UUID(), kind: CanvasMaskKind, isAutoDetected: Bool = false) {
+        self.id = id
+        self.kind = kind
+        self.isAutoDetected = isAutoDetected
+    }
 }
 
 fileprivate enum CanvasMaskGeometry {
@@ -442,6 +702,18 @@ fileprivate enum CanvasMaskGeometry {
             }
         }
         return out
+    }
+}
+
+/// Avoid attaching a zero-distance drag when idle so scribble/region gestures win after auto-redact.
+fileprivate extension View {
+    @ViewBuilder
+    func optionalSimultaneousGesture<G: Gesture>(_ enabled: Bool, _ gesture: G) -> some View {
+        if enabled {
+            self.simultaneousGesture(gesture)
+        } else {
+            self
+        }
     }
 }
 

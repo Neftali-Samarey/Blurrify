@@ -215,10 +215,24 @@ private extension ControlView {
 private extension ControlView {
 
     func toggleTool(_ tool: ActiveTool) {
+        let previous = activeTool
         if activeTool == tool {
             activeTool = .none
         } else {
             activeTool = tool
+        }
+
+        if previous != activeTool {
+            switch previous {
+            case .scribble:
+                eventCompletion(.scribble(isEnabled: false))
+            case .region:
+                eventCompletion(.region(isEnabled: false))
+            case .autoRedacting:
+                eventCompletion(.autoRedacting(isEnabled: false))
+            case .none:
+                break
+            }
         }
 
         switch tool {
