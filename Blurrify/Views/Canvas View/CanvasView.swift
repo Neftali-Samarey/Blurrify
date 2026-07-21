@@ -610,32 +610,55 @@ fileprivate extension CanvasView {
         case .blurIntensityChanged(let blurIntensity):
             blurIntensityRadius = blurIntensity
         case .save:
-            print("saving")
+            saveEditedImage()
         case .trash:
             showTrashAlert = true
         }
     }
-    
-    /*
-     case .saving:
-         /*let blurImage = boxBlur(with: uiImage)
-         guard let blurImage = blurImage else { return }*/
-         guard let finalizedImage = editedImage else { return }
 
-         // called last after all edits.
-         saveImageToPhotos(finalizedImage) { error in
-             if let error = error {
-                 errorPresented = true
-                 print("Error saving to camera roll. Error: \(error)")
-                 HapticFeedbackService.vibrate(.error)
-             } else {
-                 print("Saving with blur preset: \(blurIntensityRadius)")
-                 alertPresented = true
-                 HapticFeedbackService.vibrate(.success)
-             }
-         }
-     case .trash:
-     */
+    /// Renders the masks onto the original image at its native resolution and saves it to Photos.
+    func saveEditedImage() {
+        guard lastImageSize.width > 0, lastImageSize.height > 0 else {
+            errorPresented = true
+            HapticFeedbackService.vibrate(.error)
+            return
+        }
+
+        let rects = CanvasMaskGeometry.allBlurRects(
+            from: maskEdits,
+            scribbleBrushWidth: CanvasMaskGeometry.scribbleBrushWidth
+        )
+        let image = uiImage
+        let size = lastImageSize
+        let radius = blurIntensityRadius
+
+        Task {
+            let finalImage = await Task.detached(priority: .userInitiated) { () -> UIImage? in
+                guard let processor = BoxBlurProcessor(image: image, lastImageSize: size, rectangles: rects) else {
+                    return nil
+                }
+                return processor.applyBlur(with: radius)
+            }.value
+
+            await MainActor.run {
+                guard let finalImage else {
+                    errorPresented = true
+                    HapticFeedbackService.vibrate(.error)
+                    return
+                }
+
+                saveImageToPhotos(finalImage) { error in
+                    if error != nil {
+                        errorPresented = true
+                        HapticFeedbackService.vibrate(.error)
+                    } else {
+                        alertPresented = true
+                        HapticFeedbackService.vibrate(.success)
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Mask edits (rectangles + scribble strokes)

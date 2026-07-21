@@ -383,7 +383,7 @@ enum SensitiveTextVisionService {
             return emptyResult(.scanUnavailable(.visionRequestFailed))
         }
 
-        guard let observations = request.results as? [VNRecognizedTextObservation] else {
+        guard let observations = request.results else {
             return emptyResult(.noTextObservations)
         }
 
