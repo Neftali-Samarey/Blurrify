@@ -79,7 +79,7 @@ public struct CanvasView: View {
                 Rectangle()
                     .frame(height: 75)
                     .overlay(alignment: .center) {
-                        ControlView(controlStyle: .overlay(style: .pill)) { controlEvents in
+                        ControlView(autoRedactEnabled: $autoRedactMode, controlStyle: .overlay(style: .pill)) { controlEvents in
                             handleAction(for: controlEvents)
                         }
                         .padding(.horizontal, 12.5)
@@ -361,15 +361,15 @@ extension CanvasView {
         let image = uiImage
         let size = lastImageSize
         Task {
-            let rects = await Task.detached(priority: .userInitiated) {
-                SensitiveTextVisionService.allSensitiveCanvasRects(in: image, canvasSize: size)
+            let scanResult = await Task.detached(priority: .userInitiated) {
+                SensitiveTextVisionService.scanSensitiveCanvasRects(in: image, canvasSize: size)
             }.value
             await MainActor.run {
                 guard autoRedactMode else { return }
                 let pad: CGFloat = 6
                 let canvasBounds = CGRect(origin: .zero, size: size)
                 var firstNewSelection: UUID?
-                for rect in rects {
+                for rect in scanResult.rects {
                     let expanded = rect.insetBy(dx: -pad, dy: -pad)
                     let clamped = expanded.intersection(canvasBounds)
                     guard clamped.width > 8, clamped.height > 8 else { continue }
@@ -380,6 +380,13 @@ extension CanvasView {
                     }
                 }
                 guard firstNewSelection != nil else {
+                    AlertKitAPI.present(
+                        title: "No Sensitive Text Detected",
+                        icon: .error,
+                        style: .iOS17AppleMusic,
+                        haptic: .error
+                    )
+                    handleAction(for: .autoRedacting(isEnabled: false))
                     HapticFeedbackService.vibrate(.warning)
                     return
                 }

@@ -38,6 +38,7 @@ private enum ActiveTool {
 
 public struct ControlView: View {
 
+    @Binding private var autoRedactEnabled: Bool
     @State private var blurIntensity: CGFloat = 5
     @State private var scribbleWidth: CGFloat = 5       // not being used at the moment
     @State private var activeTool: ActiveTool = .none
@@ -52,9 +53,11 @@ public struct ControlView: View {
     private let maximumWidth: CGFloat = 20              // not being used at the moment
 
     public init(
+        autoRedactEnabled: Binding<Bool>,
         controlStyle: ControlStyle = .overlay(style: .none),
         eventCompletion: @escaping (ControlEvent) -> Void
     ) {
+        self._autoRedactEnabled = autoRedactEnabled
         self.controlStyle = controlStyle
         self.eventCompletion = eventCompletion
     }
@@ -71,6 +74,11 @@ public struct ControlView: View {
         .frame(height: Constants.height)
         .background(styleMode)
         .cornerRadius(overlayStyle)
+        .onChange(of: autoRedactEnabled) { _, enabled in
+            if !enabled, activeTool == .autoRedacting {
+                activeTool = .none
+            }
+        }
     }
 }
 
@@ -282,5 +290,5 @@ private extension ControlView {
 }
 
 #Preview {
-    ControlView { _ in }
+    ControlView(autoRedactEnabled: .constant(false)) { _ in }
 }

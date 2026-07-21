@@ -311,13 +311,61 @@ enum SensitiveTextHeuristics {
     }
 }
 
+/// Why an auto-redact scan returned no sensitive regions (for UI feedback and debugging).
+enum SensitiveTextScanOutcome: Sendable, Equatable {
+    case found(count: Int)
+    case noSensitiveTextFound(textObservationCount: Int)
+    case noTextObservations
+    case scanUnavailable(SensitiveTextScanUnavailableReason)
+
+    var logMessage: String {
+        switch self {
+        case .found(let count):
+            return "Found \(count) sensitive region(s)"
+        case .noSensitiveTextFound(let count):
+            return "No sensitive text found (\(count) text line(s) scanned)"
+        case .noTextObservations:
+            return "No text detected in image"
+        case .scanUnavailable(let reason):
+            return "Scan unavailable: \(reason.logMessage)"
+        }
+    }
+}
+
+enum SensitiveTextScanUnavailableReason: Sendable, Equatable {
+    case invalidCanvasSize
+    case missingCGImage
+    case visionRequestFailed
+
+    var logMessage: String {
+        switch self {
+        case .invalidCanvasSize: return "invalid canvas size"
+        case .missingCGImage: return "missing image data"
+        case .visionRequestFailed: return "Vision request failed"
+        }
+    }
+}
+
+struct SensitiveTextScanResult: Sendable {
+    let rects: [CGRect]
+    let outcome: SensitiveTextScanOutcome
+}
+
 enum SensitiveTextVisionService {
 
-    /// All sensitive text regions in **canvas** coordinates (reading order: top → bottom, left → right).
-    /// Near-duplicate boxes from Vision are dropped using overlap on the smaller area.
-    static func allSensitiveCanvasRects(in image: UIImage, canvasSize: CGSize) -> [CGRect] {
-        guard canvasSize.width > 1, canvasSize.height > 1 else { return [] }
-        guard let cgImage = image.cgImage else { return [] }
+    /// Called when a scan finds no sensitive regions. Defaults to console logging; assign from CanvasView for UI feedback.
+    static var emptyScanHandler: (SensitiveTextScanOutcome) -> Void = { outcome in
+        print("[SensitiveTextVision] \(outcome.logMessage)")
+    }
+
+    /// Runs Vision + heuristics and returns rects with an outcome suitable for UI feedback.
+    static func scanSensitiveCanvasRects(in image: UIImage, canvasSize: CGSize) -> SensitiveTextScanResult {
+        guard canvasSize.width > 1, canvasSize.height > 1 else {
+            return emptyResult(.scanUnavailable(.invalidCanvasSize))
+        }
+        guard let cgImage = image.cgImage else {
+            return emptyResult(.scanUnavailable(.missingCGImage))
+        }
 
         let pixelWidth = CGFloat(cgImage.width)
         let pixelHeight = CGFloat(cgImage.height)
@@ -332,10 +380,16 @@ enum SensitiveTextVisionService {
         do {
             try handler.perform([request])
         } catch {
-            return []
+            return emptyResult(.scanUnavailable(.visionRequestFailed))
         }
 
-        guard let observations = request.results as? [VNRecognizedTextObservation] else { return [] }
+        guard let observations = request.results as? [VNRecognizedTextObservation] else {
+            return emptyResult(.noTextObservations)
+        }
+
+        if observations.isEmpty {
+            return emptyResult(.noTextObservations)
+        }
 
         let sorted = observations.sorted { a, b in
             let ay = a.boundingBox.maxY
@@ -368,15 +422,30 @@ enum SensitiveTextVisionService {
             rects.append(canvasRect)
         }
 
-        return dedupeOverlappingRects(rects, overlapOnSmallerMin: 0.88)
+        let deduped = dedupeOverlappingRects(rects, overlapOnSmallerMin: 0.88)
+        if deduped.isEmpty {
+            return emptyResult(.noSensitiveTextFound(textObservationCount: observations.count))
+        }
+        return SensitiveTextScanResult(rects: deduped, outcome: .found(count: deduped.count))
+    }
+
+    /// All sensitive text regions in **canvas** coordinates (reading order: top → bottom, left → right).
+    /// Near-duplicate boxes from Vision are dropped using overlap on the smaller area.
+    static func allSensitiveCanvasRects(in image: UIImage, canvasSize: CGSize) -> [CGRect] {
+        scanSensitiveCanvasRects(in: image, canvasSize: canvasSize).rects
     }
 
     /// First match only (same ordering as ``allSensitiveCanvasRects``).
     static func firstSensitiveCanvasRect(in image: UIImage, canvasSize: CGSize) -> CGRect? {
-        allSensitiveCanvasRects(in: image, canvasSize: canvasSize).first
+        scanSensitiveCanvasRects(in: image, canvasSize: canvasSize).rects.first
     }
 
-    /// Intersection area divided by the smaller box’s area (1.0 when identical).
+    private static func emptyResult(_ outcome: SensitiveTextScanOutcome) -> SensitiveTextScanResult {
+        emptyScanHandler(outcome)
+        return SensitiveTextScanResult(rects: [], outcome: outcome)
+    }
+
+    /// intersection area divided by the smaller box’s area (1.0 when identical).
     private static func overlapRatioOnSmaller(_ a: CGRect, _ b: CGRect) -> CGFloat {
         let inter = a.intersection(b)
         guard inter.width > 1, inter.height > 1 else { return 0 }
@@ -386,7 +455,7 @@ enum SensitiveTextVisionService {
         return interArea / min(aArea, bArea)
     }
 
-    /// Keeps earlier (reading-order) rect when another is almost the same region.
+    /// keeps earlier (reading-order) rect when another is almost the same region.
     private static func dedupeOverlappingRects(_ rects: [CGRect], overlapOnSmallerMin: CGFloat) -> [CGRect] {
         var out: [CGRect] = []
         for r in rects {
