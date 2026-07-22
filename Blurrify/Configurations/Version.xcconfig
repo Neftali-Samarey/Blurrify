@@ -8,8 +8,8 @@
 // Configuration settings file format documentation can be found at:
 // https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
 
-// Marketing version
+// Marketing version (1 to 3 period-separated integers)
 APP_MARKETING_VERSION = 1.0.0
 
-// App build number
-APP_BUILD_NUMBER = 1.0
+// App build number (Should be a single, monotonically increasing integer)
+APP_BUILD_NUMBER = 1
