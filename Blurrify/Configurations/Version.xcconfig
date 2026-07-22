@@ -1,0 +1,15 @@
+//
+//  Version.xcconfig
+//  Blurrify
+//
+//  Created by Neftali Samarey on 7/22/26.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+// Marketing version
+APP_MARKETING_VERSION = 1.0.0
+
+// App build number
+APP_BUILD_NUMBER = 1.0

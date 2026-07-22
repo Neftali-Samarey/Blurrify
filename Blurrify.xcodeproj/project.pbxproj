@@ -16,6 +16,8 @@
 		ED59F73E2DE7FB4E00B7DA6A /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F73D2DE7FB4300B7DA6A /* Icons.swift */; };
 		ED62E9A92FB3690600C97CF2 /* BoxBlurProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED62E9A82FB3690400C97CF2 /* BoxBlurProcessor.swift */; };
 		ED62E9AC2FB3690900C97CF2 /* SensitiveTextVisionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED62E9AD2FB3690A00C97CF2 /* SensitiveTextVisionService.swift */; };
+		ED6F9D2A3010844600D2CFE7 /* Version.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = ED6F9D293010844600D2CFE7 /* Version.xcconfig */; };
+		ED6F9D2C3010872800D2CFE7 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6F9D2B3010871C00D2CFE7 /* Bundle+Extensions.swift */; };
 		EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */; };
 		EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */; };
 		EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = EDC4E6B82BDE9161001EA129 /* AlertKit */; };
@@ -37,6 +39,8 @@
 		ED59F73D2DE7FB4300B7DA6A /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		ED62E9A82FB3690400C97CF2 /* BoxBlurProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxBlurProcessor.swift; sourceTree = "<group>"; };
 		ED62E9AD2FB3690A00C97CF2 /* SensitiveTextVisionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveTextVisionService.swift; sourceTree = "<group>"; };
+		ED6F9D293010844600D2CFE7 /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
+		ED6F9D2B3010871C00D2CFE7 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6EF2BEFF583001EA129 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
@@ -80,9 +84,18 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		ED6F9D2D30108BD800D2CFE7 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				ED6F9D293010844600D2CFE7 /* Version.xcconfig */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
 		EDC4E6B22BDC288B001EA129 /* Extesions */ = {
 			isa = PBXGroup;
 			children = (
+				ED6F9D2B3010871C00D2CFE7 /* Bundle+Extensions.swift */,
 				EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */,
 				EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */,
 			);
@@ -117,6 +130,7 @@
 		EDE450542BDBFB5D0058C512 /* Blurrify */ = {
 			isa = PBXGroup;
 			children = (
+				ED6F9D2D30108BD800D2CFE7 /* Configurations */,
 				EDED03F22DDD86EA003F3AF1 /* App */,
 				ED59F73C2DE7FB3400B7DA6A /* Models */,
 				EDED03F12DDD86D4003F3AF1 /* Views */,
@@ -242,6 +256,7 @@
 			files = (
 				EDE4505D2BDBFB5F0058C512 /* Preview Assets.xcassets in Resources */,
 				EDE4505A2BDBFB5F0058C512 /* Assets.xcassets in Resources */,
+				ED6F9D2A3010844600D2CFE7 /* Version.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +274,7 @@
 				ED62E9AC2FB3690900C97CF2 /* SensitiveTextVisionService.swift in Sources */,
 				EDCE47102E0CB298003AC1B2 /* Print.swift in Sources */,
 				ED59F7372DE6D92700B7DA6A /* ImageSaveHelper.swift in Sources */,
+				ED6F9D2C3010872800D2CFE7 /* Bundle+Extensions.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
 				ED59F73B2DE7F2C900B7DA6A /* BackdropView.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */,
@@ -394,11 +410,12 @@
 		};
 		EDE450612BDBFB5F0058C512 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED6F9D293010844600D2CFE7 /* Version.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = " $(APP_BUILD_NUMBER)";
 				DEVELOPMENT_ASSET_PATHS = "\"Blurrify/Preview Content\"";
 				DEVELOPMENT_TEAM = X752JDEFHP;
 				ENABLE_PREVIEWS = YES;
@@ -414,7 +431,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = " $(APP_MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neftali.blurrify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -425,11 +442,12 @@
 		};
 		EDE450622BDBFB5F0058C512 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED6F9D293010844600D2CFE7 /* Version.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = " $(APP_BUILD_NUMBER)";
 				DEVELOPMENT_ASSET_PATHS = "\"Blurrify/Preview Content\"";
 				DEVELOPMENT_TEAM = X752JDEFHP;
 				ENABLE_PREVIEWS = YES;
@@ -445,7 +463,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = " $(APP_MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neftali.blurrify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

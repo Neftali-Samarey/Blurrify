@@ -68,7 +68,7 @@ struct MainContentView: View {
                     }
                 }
 
-                // **any disclosure text below**
+                releaseVersionInfoText
             }
             .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
         }
@@ -77,5 +77,15 @@ struct MainContentView: View {
     private func clear() {
         self.pickerItem = nil
         self.selectedUIImage = nil
+    }
+}
+
+fileprivate extension MainContentView {
+    @ViewBuilder
+    var releaseVersionInfoText: some View {
+        if let releaseVersionNumber = Bundle.main.releaseVersionNumber {
+            Text("v\(releaseVersionNumber)")
+                .font(.footnote)
+        }
     }
 }
