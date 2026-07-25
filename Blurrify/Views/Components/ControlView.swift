@@ -199,7 +199,6 @@ private extension ControlView {
         action: @escaping () -> Void,
         onLongPress: (() -> Void)? = nil
     ) -> some View {
-
         Button(action: action) {
             Image(systemName: systemImage)
                 .font(.system(size: 23))

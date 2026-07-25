@@ -16,6 +16,7 @@ struct MainContentView: View {
     @State private var pickerItem: PhotosPickerItem?
     @State private var selectedUIImage: UIImage?
     @State private var uiImageSize: CGSize = .zero
+    @State private var isLogoTapped: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -68,7 +69,7 @@ struct MainContentView: View {
                     }
                 }
 
-                releaseVersionInfoText
+                footerInformation
             }
             .background(colorScheme == .dark ? Color.backgroundDarkBlue : Color.white)
         }
@@ -81,11 +82,49 @@ struct MainContentView: View {
 }
 
 fileprivate extension MainContentView {
+    
+    var appLabel: some View {
+        VStack(spacing: 1) {
+            Image("westie_logo")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 55, height: 55)
+                .foregroundStyle(.primary)
+                .onTapGesture {
+                    isLogoTapped.toggle()
+                    HapticFeedbackService.vibrate(.selection)
+                }
+
+            HStack(spacing: 1) {
+                if isLogoTapped {
+                    Text("Neftali Samarey")
+                        .font(.system(size: 14, weight: .bold, design: .default))
+                    Text(" | NYC")
+                        .font(.system(size: 14, weight: .regular, design: .default))
+                } else {
+                    Text("Scottie")
+                        .font(.system(size: 14, weight: .bold, design: .default))
+
+                    Text("Interactive")
+                        .font(.system(size: 14, weight: .regular, design: .default))
+                }
+            }
+        }
+    }
+    
     @ViewBuilder
     var releaseVersionInfoText: some View {
         if let releaseVersionNumber = Bundle.main.releaseVersionNumber {
             Text("v\(releaseVersionNumber)")
                 .font(.footnote)
         }
+    }
+    
+    var footerInformation: some View {
+        VStack(spacing: 5) {
+            appLabel
+            releaseVersionInfoText
+        }
+        .accessibilityHidden(true)
     }
 }
