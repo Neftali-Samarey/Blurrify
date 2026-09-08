@@ -21,24 +21,46 @@ struct MainContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
+                Spacer()
+
                 ZStack {
-                    VStack {
-                        PhotosPicker(selection: $pickerItem, matching: .images) {
-                            VStack(alignment: .center) {
-                                Image(systemName: Icon.addImage.systemName)
+                    VStack(spacing: 10) {
+                        // camera
+                        VStack {
+                            VStack {
+                                Image(systemName: Icon.camera.systemName)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 40.0, height: 40.0)
+                                    .frame(width: Constants.boxDimensions, height: Constants.boxDimensions)
                                     .tint(colorScheme == .dark ? Color.white : Color.primaryBlue)
-                                Text("Select Image")
+                                Text("Open Camera")
                                     .font(.headline)
                                     .padding(.top, 5)
                             }
                             .padding([.top, .bottom], 70)
                             .padding([.leading, .trailing], 60)
                         }
+                        .dottedBorder(colorScheme == .dark ? Color.primaryWhite : Color.primaryBlue.opacity(0.5))
+
+                        // photo picker
+                        VStack {
+                            PhotosPicker(selection: $pickerItem, matching: .images) {
+                                VStack(alignment: .center) {
+                                    Image(systemName: Icon.addImage.systemName)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: Constants.boxDimensions, height: Constants.boxDimensions)
+                                        .tint(colorScheme == .dark ? Color.white : Color.primaryBlue)
+                                    Text("Select Image")
+                                        .font(.headline)
+                                        .padding(.top, 5)
+                                }
+                                .padding([.top, .bottom], 70)
+                                .padding([.leading, .trailing], 60)
+                            }
+                        }
+                        .dottedBorder(colorScheme == .dark ? Color.primaryWhite : Color.primaryBlue.opacity(0.5))
                     }
-                    .dottedBorder(colorScheme == .dark ? Color.primaryWhite : Color.primaryBlue.opacity(0.5))
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .edgesIgnoringSafeArea(.all)
@@ -126,5 +148,11 @@ fileprivate extension MainContentView {
             releaseVersionInfoText
         }
         .accessibilityHidden(true)
+    }
+}
+
+fileprivate extension MainContentView {
+    enum Constants {
+        static let boxDimensions: CGFloat = 35.0
     }
 }
