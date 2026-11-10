@@ -293,7 +293,6 @@ enum SensitiveTextHeuristics {
         return nil
     }
 
-    /// Luhn check for primary account numbers (reduces accidental matches on arbitrary digit runs).
     private static func luhnCheck(_ number: String) -> Bool {
         var sum = 0
         var alternate = false
