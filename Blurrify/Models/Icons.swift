@@ -9,8 +9,10 @@ import Foundation
 
 public enum Icon: String, CaseIterable {
     case addImage
+    case camera
     case chevronLeft
     case download
+    case face
     case pan
     case scribble
     case glimmer
@@ -24,10 +26,14 @@ public enum Icon: String, CaseIterable {
         switch self {
         case .addImage:
             return "photo.badge.plus"
+        case .camera:
+            return "camera"
         case .chevronLeft:
             return "chevron.left"
         case .download:
             return "square.and.arrow.down"
+        case .face:
+            return "face.smiling"
         case .pan:
             return "rectangle.and.arrow.up.right.and.arrow.down.left"
         case .scribble:
