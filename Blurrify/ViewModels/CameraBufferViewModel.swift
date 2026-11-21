@@ -35,7 +35,7 @@ class CameraBufferViewModel {
 
 // MARK: Camera Shutter Action
 
-fileprivate extension CameraBufferViewModel {
+extension CameraBufferViewModel {
     @MainActor
     func takePicture() async {
         guard !isSavingPhoto, let frame = currentFrame else {
@@ -51,7 +51,7 @@ fileprivate extension CameraBufferViewModel {
         HapticFeedbackService.vibrate(saved ? .success : .error)
     }
     
-    func saveToPhotoLibrary(_ image: UIImage) async -> Bool {
+    private func saveToPhotoLibrary(_ image: UIImage) async -> Bool {
         await withCheckedContinuation { continuation in
             imageSaver.completion = { error in
                 continuation.resume(returning: error == nil)
