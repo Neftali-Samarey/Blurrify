@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		ED2278EA2DE1722200A991FD /* Zoomable in Frameworks */ = {isa = PBXBuildFile; productRef = ED2278E92DE1722200A991FD /* Zoomable */; };
+		ED578F38308A92DA00985160 /* CanvasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED578F37308A92D200985160 /* CanvasViewModel.swift */; };
+		ED578F3B308A9B1000985160 /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED578F3A308A9B0900985160 /* AppRoute.swift */; };
+		ED578F3D308A9BB800985160 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED578F3C308A9BB600985160 /* Router.swift */; };
+		ED578F66308AB96F00985160 /* MainContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED578F65308AB96900985160 /* MainContentViewModel.swift */; };
 		ED59F7322DE692B300B7DA6A /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7312DE692B300B7DA6A /* CanvasView.swift */; };
 		ED59F7352DE6D5B800B7DA6A /* CanvasView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7342DE6D5AF00B7DA6A /* CanvasView+Extensions.swift */; };
 		ED59F7372DE6D92700B7DA6A /* ImageSaveHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED59F7362DE6D91F00B7DA6A /* ImageSaveHelper.swift */; };
@@ -23,6 +27,11 @@
 		EDC4E6B92BDE9161001EA129 /* AlertKit in Frameworks */ = {isa = PBXBuildFile; productRef = EDC4E6B82BDE9161001EA129 /* AlertKit */; };
 		EDC4E6F02BEFF583001EA129 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC4E6EF2BEFF583001EA129 /* ControlView.swift */; };
 		EDCE47102E0CB298003AC1B2 /* Print.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCE470F2E0CB298003AC1B2 /* Print.swift */; };
+		EDD0E1AC30ACF7D400C84FF3 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD0E1AB30ACF7D400C84FF3 /* CameraView.swift */; };
+		EDD0E1AE30ACFABD00C84FF3 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD0E1AD30ACFABA00C84FF3 /* CameraManager.swift */; };
+		EDD0E1B030AD295900C84FF3 /* CMSampleBuffer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD0E1AF30AD295700C84FF3 /* CMSampleBuffer+Extension.swift */; };
+		EDD0E1B230AD2A2200C84FF3 /* CIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDD0E1B130AD2A1200C84FF3 /* CIImage+Extension.swift */; };
+		EDDF214930AFAE040033D06D /* CameraBufferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDF214830AFADFD0033D06D /* CameraBufferViewModel.swift */; };
 		EDE450562BDBFB5D0058C512 /* BlurrifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450552BDBFB5D0058C512 /* BlurrifyApp.swift */; };
 		EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE450572BDBFB5D0058C512 /* MainContentView.swift */; };
 		EDE4505A2BDBFB5F0058C512 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDE450592BDBFB5F0058C512 /* Assets.xcassets */; };
@@ -31,6 +40,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED578F37308A92D200985160 /* CanvasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasViewModel.swift; sourceTree = "<group>"; };
+		ED578F3A308A9B0900985160 /* AppRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRoute.swift; sourceTree = "<group>"; };
+		ED578F3C308A9BB600985160 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		ED578F65308AB96900985160 /* MainContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentViewModel.swift; sourceTree = "<group>"; };
 		ED59F7312DE692B300B7DA6A /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		ED59F7342DE6D5AF00B7DA6A /* CanvasView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CanvasView+Extensions.swift"; sourceTree = "<group>"; };
 		ED59F7362DE6D91F00B7DA6A /* ImageSaveHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveHelper.swift; sourceTree = "<group>"; };
@@ -45,6 +58,11 @@
 		EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
 		EDC4E6EF2BEFF583001EA129 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		EDCE470F2E0CB298003AC1B2 /* Print.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Print.swift; sourceTree = "<group>"; };
+		EDD0E1AB30ACF7D400C84FF3 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		EDD0E1AD30ACFABA00C84FF3 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		EDD0E1AF30AD295700C84FF3 /* CMSampleBuffer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CMSampleBuffer+Extension.swift"; sourceTree = "<group>"; };
+		EDD0E1B130AD2A1200C84FF3 /* CIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Extension.swift"; sourceTree = "<group>"; };
+		EDDF214830AFADFD0033D06D /* CameraBufferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraBufferViewModel.swift; sourceTree = "<group>"; };
 		EDE450522BDBFB5D0058C512 /* Blurrify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blurrify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE450552BDBFB5D0058C512 /* BlurrifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurrifyApp.swift; sourceTree = "<group>"; };
 		EDE450572BDBFB5D0058C512 /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +84,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ED578F36308A925700985160 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				EDDF214830AFADFD0033D06D /* CameraBufferViewModel.swift */,
+				ED578F65308AB96900985160 /* MainContentViewModel.swift */,
+				ED578F37308A92D200985160 /* CanvasViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		ED578F39308A9B0200985160 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				ED578F3C308A9BB600985160 /* Router.swift */,
+				ED578F3A308A9B0900985160 /* AppRoute.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
 		ED59F7332DE6D57500B7DA6A /* Canvas View */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,9 +129,19 @@
 			path = Configurations;
 			sourceTree = "<group>";
 		};
+		ED9B1B1D303BAB1800F519EA /* CameraView */ = {
+			isa = PBXGroup;
+			children = (
+				EDD0E1AB30ACF7D400C84FF3 /* CameraView.swift */,
+			);
+			path = CameraView;
+			sourceTree = "<group>";
+		};
 		EDC4E6B22BDC288B001EA129 /* Extesions */ = {
 			isa = PBXGroup;
 			children = (
+				EDD0E1B130AD2A1200C84FF3 /* CIImage+Extension.swift */,
+				EDD0E1AF30AD295700C84FF3 /* CMSampleBuffer+Extension.swift */,
 				ED6F9D2B3010871C00D2CFE7 /* Bundle+Extensions.swift */,
 				EDC4E6B32BDC28CA001EA129 /* View+Extensions.swift */,
 				EDC4E6B52BDC4F2D001EA129 /* Color+Extensions.swift */,
@@ -130,6 +177,8 @@
 		EDE450542BDBFB5D0058C512 /* Blurrify */ = {
 			isa = PBXGroup;
 			children = (
+				ED578F39308A9B0200985160 /* Navigation */,
+				ED578F36308A925700985160 /* ViewModels */,
 				ED6F9D2D30108BD800D2CFE7 /* Configurations */,
 				EDED03F22DDD86EA003F3AF1 /* App */,
 				ED59F73C2DE7FB3400B7DA6A /* Models */,
@@ -153,6 +202,7 @@
 		EDE450632BDC16030058C512 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				EDD0E1AD30ACFABA00C84FF3 /* CameraManager.swift */,
 				ED62E9A82FB3690400C97CF2 /* BoxBlurProcessor.swift */,
 				ED62E9AD2FB3690A00C97CF2 /* SensitiveTextVisionService.swift */,
 				ED59F7382DE7EAA300B7DA6A /* HapticFeedbackService.swift */,
@@ -165,6 +215,7 @@
 		EDED03F12DDD86D4003F3AF1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				ED9B1B1D303BAB1800F519EA /* CameraView */,
 				EDC4E6EE2BEFF562001EA129 /* Components */,
 				EDED03F32DDD8743003F3AF1 /* Main View */,
 				ED59F7332DE6D57500B7DA6A /* Canvas View */,
@@ -271,13 +322,22 @@
 				EDC4E6B62BDC4F2D001EA129 /* Color+Extensions.swift in Sources */,
 				ED59F73E2DE7FB4E00B7DA6A /* Icons.swift in Sources */,
 				ED62E9A92FB3690600C97CF2 /* BoxBlurProcessor.swift in Sources */,
+				ED578F3B308A9B1000985160 /* AppRoute.swift in Sources */,
+				ED578F66308AB96F00985160 /* MainContentViewModel.swift in Sources */,
 				ED62E9AC2FB3690900C97CF2 /* SensitiveTextVisionService.swift in Sources */,
+				ED578F3D308A9BB800985160 /* Router.swift in Sources */,
+				ED578F38308A92DA00985160 /* CanvasViewModel.swift in Sources */,
+				EDD0E1B230AD2A2200C84FF3 /* CIImage+Extension.swift in Sources */,
 				EDCE47102E0CB298003AC1B2 /* Print.swift in Sources */,
+				EDD0E1AE30ACFABD00C84FF3 /* CameraManager.swift in Sources */,
 				ED59F7372DE6D92700B7DA6A /* ImageSaveHelper.swift in Sources */,
+				EDDF214930AFAE040033D06D /* CameraBufferViewModel.swift in Sources */,
+				EDD0E1B030AD295900C84FF3 /* CMSampleBuffer+Extension.swift in Sources */,
 				ED6F9D2C3010872800D2CFE7 /* Bundle+Extensions.swift in Sources */,
 				EDE450652BDC161C0058C512 /* PhotoGalleryService.swift in Sources */,
 				ED59F73B2DE7F2C900B7DA6A /* BackdropView.swift in Sources */,
 				EDE450582BDBFB5D0058C512 /* MainContentView.swift in Sources */,
+				EDD0E1AC30ACF7D400C84FF3 /* CameraView.swift in Sources */,
 				EDC4E6B42BDC28CA001EA129 /* View+Extensions.swift in Sources */,
 				ED59F7322DE692B300B7DA6A /* CanvasView.swift in Sources */,
 				ED59F7392DE7EAAC00B7DA6A /* HapticFeedbackService.swift in Sources */,
@@ -421,11 +481,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Detect facial objects to perform blurrings";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Blurrify saves photos you take to your camera roll.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Blurrify needs access to camera roll in order to save edited images.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -453,11 +515,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Detect facial objects to perform blurrings";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Blurrify saves photos you take to your camera roll.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Blurrify needs access to camera roll in order to save edited images.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
